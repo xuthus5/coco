@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/cc/xuthus/coco">
+    <file>coco-window.ui</file>
+    <file>gtk/help-overlay.ui</file>
+    <file>components/base64/base64.ui</file>
+    <file>components/clipboard/clipboard.ui</file>
+  </gresource>
+</gresources>

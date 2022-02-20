@@ -1,0 +1,7 @@
+data/cc.xuthus.coco.desktop.in
+data/cc.xuthus.coco.appdata.xml.in
+data/cc.xuthus.coco.gschema.xml
+src/coco-window.ui
+src/main.c
+src/coco-window.c
+
