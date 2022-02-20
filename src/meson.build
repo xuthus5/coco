@@ -6,6 +6,7 @@ coco_sources = [
   'components/base64/lib/encode.c',
   'components/base64/lib/decode.c',
   'components/base64/lib/buffer.c',
+  'components/time_convert/time_convert.c',
   'components/clipboard/clipboard.c',
 ]
 

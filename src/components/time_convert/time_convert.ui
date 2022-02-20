@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="CocoTimeConvert" parent="AdwBin">
+    <property name="child">
+      <object class="AdwClamp">
+        <property name="maximum-size">500</property>
+        <property name="tightening-threshold">350</property>
+        <property name="child">
+          <object class="GtkBox">
+            <property name="valign">center</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Beijing Time String</property>
+                    <child>
+                      <object class="GtkButton" id="bj_string_button">
+                        <property name="valign">center</property>
+                        <property name="icon-name">emblem-synchronizing-symbolic</property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="bj_string">
+                        <property name="max-length">24</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Beijing Time Unix</property>                    
+                    <child>
+                      <object class="GtkButton" id="bj_unix_button">                        
+                        <property name="valign">center</property>
+                        <property name="icon-name">emblem-synchronizing-symbolic</property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="bj_unix">
+                        <property name="max-length">24</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwActionRow">
+                    <child>
+                      <object class="GtkEntry" id="input_unix_time">
+                        <property name="max-length">24</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>                    
+                    <child>
+                      <object class="GtkButton" id="convert_to_string_button">                        
+                        <property name="label" translatable="yes">&gt;&gt;char</property>
+                        <property name="valign">center</property>                        
+                        <property name="tooltip-text">suggested-action</property>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                    </child>                    
+                    <child>
+                      <object class="GtkEntry" id="output_string_time">
+                        <property name="max-length">24</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>    
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <child>
+                      <object class="GtkEntry" id="input_string_time">
+                        <property name="max-length">24</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>                    
+                    <child>
+                      <object class="GtkButton" id="convert_to_unix_button">                        
+                        <property name="label" translatable="yes">&gt;&gt;unix</property>
+                        <property name="valign">center</property>                        
+                        <property name="tooltip-text">suggested-action</property>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                    </child>                    
+                    <child>
+                      <object class="GtkEntry" id="output_unix_time">
+                        <property name="max-length">24</property>
+                        <property name="max-width-chars">20</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>    
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>
+

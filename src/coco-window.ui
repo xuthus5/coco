@@ -56,6 +56,15 @@
                 </child>
                 <child>
                   <object class="GtkStackPage">
+                    <property name="name">time_convert</property>
+                    <property name="title">Time Convert</property>
+                    <property name="child">
+                      <object class="CocoTimeConvert"/>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackPage">
                     <property name="name">clipboard_sync</property>
                     <property name="title">Clipboard</property>
                     <property name="child">

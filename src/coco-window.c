@@ -30,6 +30,7 @@
 #include "coco-config.h"
 #include "coco-window.h"
 #include "components/base64/base64.h"
+#include "components/time_convert/time_convert.h"
 #include "components/clipboard/clipboard.h"
 #include <adwaita.h>
 
@@ -53,6 +54,7 @@ static void
 coco_window_init(CocoWindow *self)
 {
   g_type_ensure(COCO_TYPE_BASE64);
+  g_type_ensure(COCO_TYPE_TIME_CONVERT);
   g_type_ensure(COCO_TYPE_CLIPBOARD);
   gtk_widget_init_template(GTK_WIDGET(self));
 }
