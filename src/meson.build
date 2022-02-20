@@ -3,6 +3,9 @@ coco_sources = [
   'coco-window.c',
   'coco-application.c',
   'components/base64/base64.c',
+  'components/base64/lib/encode.c',
+  'components/base64/lib/decode.c',
+  'components/base64/lib/buffer.c',
   'components/clipboard/clipboard.c',
 ]
 

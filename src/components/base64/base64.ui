@@ -2,8 +2,6 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <object class="GtkTextBuffer" id="encoded_data_buffer"/>
-  <object class="GtkTextBuffer" id="source_data_buffer"/>
   <template class="CocoBase64" parent="AdwBin">
     <property name="child">
       <object class="GtkBox">
@@ -26,7 +24,6 @@
                 <property name="right-margin">8</property>
                 <property name="top-margin">8</property>
                 <property name="bottom-margin">8</property>
-                <property name="buffer">source_data_buffer</property>
               </object>
             </property>
           </object>
@@ -38,7 +35,7 @@
             <property name="margin-bottom">5</property>
             <property name="spacing">10</property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="encode_button">
                 <property name="label" translatable="yes">Encode</property>
                 <property name="focusable">1</property>
                 <property name="receives-default">1</property>
@@ -49,14 +46,14 @@
               </object>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton"  id="decode_button">
                 <property name="label" translatable="yes">Decode</property>
                 <property name="focusable">1</property>
                 <property name="receives-default">1</property>
               </object>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton"  id="exchange_button">
                 <property name="label" translatable="yes">Exchange</property>
                 <property name="focusable">1</property>
                 <property name="receives-default">1</property>
@@ -76,14 +73,13 @@
             <property name="max-content-width">10</property>
             <property name="propagate-natural-width">1</property>
             <property name="child">
-              <object class="GtkTextView" id="encoded_data">
+              <object class="GtkTextView" id="destination_data">
                 <property name="focusable">1</property>
                 <property name="wrap-mode">word</property>
                 <property name="left-margin">8</property>
                 <property name="right-margin">8</property>
                 <property name="top-margin">8</property>
                 <property name="bottom-margin">8</property>
-                <property name="buffer">encoded_data_buffer</property>
               </object>
             </property>
           </object>
