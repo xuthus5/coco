@@ -21,6 +21,10 @@ struct _CocoTimeConvert {
 
 G_DEFINE_TYPE(CocoTimeConvert, coco_time_convert, ADW_TYPE_BIN)
 
+static void backspace_press(GtkEntry * entry, gpointer user_data) {
+  printf("%s\n", "ffffff");
+}
+
 static void now_bj_string_button_clicked(GtkButton * button, CocoTimeConvert * self)
 {
   GDateTime *time_now = g_date_time_new_now_local();
