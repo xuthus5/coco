@@ -1,6 +1,6 @@
 # Coco
 
-A Developer Tool Building by Adwaita.
+A Developer Tool Building by GTK4(meson+gtk4+Adwaita).
 
 ## License
 
@@ -48,3 +48,10 @@ run cc.xuthus.coco
 flatpak run cc.xuthus.coco
 ```
 
+## screenshot
+
+![base64](screenshot/base64.png)
+
+![time-convert](screenshot/time-convert.png)
+
+![clipboard](screenshot/clipboard.png)
