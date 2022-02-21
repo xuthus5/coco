@@ -16,7 +16,7 @@
               <object class="AdwPreferencesGroup">
                 <child>
                   <object class="GtkListBox" id="clipboard_list">
-                    <property name="selection-mode">none</property>
+                    <property name="activate-on-single-click">True</property>
                     <style>
                       <class name="boxed-list"/>
                     </style>

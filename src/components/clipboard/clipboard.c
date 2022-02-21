@@ -100,9 +100,16 @@ char *post_response(char *url, char * payload)
   return NULL;
 }
 
+static void clipboard_row_activate(GtkListBox *list, AdwActionRow * row, gpointer user_data) {
+  const char* title = adw_preferences_row_get_title (&row->parent_instance);
+  GdkClipboard *clipboard = gtk_widget_get_clipboard(row);
+  gdk_clipboard_set_text (clipboard, title);
+  printf("copied: %s\n", title);
+}
+
 static void pull_clipboard_data(GtkButton *button, CocoClipboard *self)
 {
-  // rebuild  //
+  // rebuild
   while (1)
     {
       GtkListBoxRow *row = gtk_list_box_get_row_at_index(self->clipboard_list, 0);
@@ -161,6 +168,11 @@ static void pull_clipboard_data(GtkButton *button, CocoClipboard *self)
                   json_object_object_get_ex(item, "content", &content_data);
                   AdwActionRow *clipboard_node = adw_action_row_new();
                   adw_preferences_row_set_title(clipboard_node, json_object_get_string(content_data));
+                  GtkButton * suffix_copy = gtk_button_new ();
+                  gtk_button_set_icon_name (suffix_copy, "edit-copy");
+                  adw_action_row_add_suffix (clipboard_node, suffix_copy);
+                  GtkStyleContext * style = gtk_widget_get_style_context (suffix_copy);
+                  gtk_style_context_add_class(style, "flat");
                   gtk_list_box_append(self->clipboard_list, clipboard_node);
                 }
             }
@@ -200,10 +212,6 @@ void get_text_from_clipboard(GdkClipboard *clipboard, GAsyncResult *res, gpointe
   printf("%s\n", add_response);
 }
 
-void set_text_to_clipboard()
-{
-}
-
 static void push_clipboard_data(GtkButton *button, CocoClipboard *self)
 {
   GdkClipboard *clipboard = gtk_widget_get_clipboard(button);
@@ -228,9 +236,10 @@ coco_clipboard_init(CocoClipboard *self)
   gtk_widget_init_template(GTK_WIDGET(self));
   g_signal_connect(self->pull_data, "clicked", G_CALLBACK(pull_clipboard_data), self);
   g_signal_connect(self->push_data, "clicked", G_CALLBACK(push_clipboard_data), self);
+  g_signal_connect(self->clipboard_list, "row-activated", G_CALLBACK (clipboard_row_activate), self);
 
-  g_signal_connect(self,"key-press-event",G_CALLBACK(),NULL);
-  g_signal_connect(self,"key-release-event",G_CALLBACK(gtk_window_propagate_key_event),NULL);
+  int is_active = gtk_list_box_get_activate_on_single_click (self->clipboard_list);
+  printf("%d\n", is_active);
 
   char *clipboard_response = get_response("https://central.xuthus.cc/api/clipboard/list");
 
@@ -268,7 +277,7 @@ coco_clipboard_init(CocoClipboard *self)
               if (exist != 1)
                 {
                   AdwActionRow *empty_node = adw_action_row_new();
-                  adw_action_row_set_title_lines(empty_node, "list empty...");
+                  adw_preferences_row_set_title(empty_node, "list empty...");
                   gtk_list_box_append(self->clipboard_list, empty_node);
                   return;
                 }
@@ -281,6 +290,12 @@ coco_clipboard_init(CocoClipboard *self)
                   json_object_object_get_ex(item, "content", &content_data);
                   AdwActionRow *clipboard_node = adw_action_row_new();
                   adw_preferences_row_set_title(clipboard_node, json_object_get_string(content_data));
+                  GtkButton * suffix_copy = gtk_button_new ();
+                  gtk_button_set_icon_name (suffix_copy, "edit-copy");
+                  adw_action_row_add_suffix (clipboard_node, suffix_copy);
+                  GtkStyleContext * style = gtk_widget_get_style_context (suffix_copy);
+                  gtk_style_context_add_class(style, "flat");
+                  adw_action_row_set_activatable_widget(clipboard_node, suffix_copy);
                   gtk_list_box_append(self->clipboard_list, clipboard_node);
                 }
             }
