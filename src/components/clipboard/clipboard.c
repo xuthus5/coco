@@ -155,7 +155,7 @@ static void pull_clipboard_data(GtkButton *button, CocoClipboard *self)
               if (exist != 1)
                 {
                   AdwActionRow *empty_node = adw_action_row_new();
-                  adw_action_row_set_title_lines(empty_node, "list empty...");
+                  adw_preferences_row_set_title(empty_node, "list empty...");
                   gtk_list_box_append(self->clipboard_list, empty_node);
                   return;
                 }
@@ -173,6 +173,7 @@ static void pull_clipboard_data(GtkButton *button, CocoClipboard *self)
                   adw_action_row_add_suffix (clipboard_node, suffix_copy);
                   GtkStyleContext * style = gtk_widget_get_style_context (suffix_copy);
                   gtk_style_context_add_class(style, "flat");
+                  adw_action_row_set_activatable_widget(clipboard_node, suffix_copy);
                   gtk_list_box_append(self->clipboard_list, clipboard_node);
                 }
             }
@@ -180,6 +181,9 @@ static void pull_clipboard_data(GtkButton *button, CocoClipboard *self)
     }
   else
     {
+      AdwActionRow *empty_node = adw_action_row_new();
+      adw_preferences_row_set_title(empty_node, "list empty...");
+      gtk_list_box_append(self->clipboard_list, empty_node);
       printf("接口请求内容: %s\n接口调用出错,程序退出.", clipboard_response);
       return;
     }
@@ -237,9 +241,6 @@ coco_clipboard_init(CocoClipboard *self)
   g_signal_connect(self->pull_data, "clicked", G_CALLBACK(pull_clipboard_data), self);
   g_signal_connect(self->push_data, "clicked", G_CALLBACK(push_clipboard_data), self);
   g_signal_connect(self->clipboard_list, "row-activated", G_CALLBACK (clipboard_row_activate), self);
-
-  int is_active = gtk_list_box_get_activate_on_single_click (self->clipboard_list);
-  printf("%d\n", is_active);
 
   char *clipboard_response = get_response("https://central.xuthus.cc/api/clipboard/list");
 
@@ -304,7 +305,7 @@ coco_clipboard_init(CocoClipboard *self)
   else
     {
       AdwActionRow *empty_node = adw_action_row_new();
-      adw_action_row_set_title_lines(empty_node, "list empty...");
+      adw_preferences_row_set_title(empty_node, "list empty...");
       gtk_list_box_append(self->clipboard_list, empty_node);
       printf("接口请求内容: %s\n接口调用出错,程序退出.", clipboard_response);
       return;
