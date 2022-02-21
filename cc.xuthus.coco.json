@@ -27,10 +27,13 @@
             "name" : "coco",
             "builddir" : true,
             "buildsystem" : "meson",
+            "build-options": {
+		"build-args": [ "--share=network" ]
+	    },
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git@github.com:xuthus5/coco.git"
+                    "url" : "https://github.com/xuthus5/coco.git"
                 }
             ]
         }

@@ -2,3 +2,4 @@
 .vscode
 .idea
 coco.kdev4
+.flatpak-builder
