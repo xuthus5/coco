@@ -12,7 +12,7 @@ coco_sources = [
 
 coco_deps = [
   dependency('gtk4'),
-  dependency('libadwaita-1'),  
+  dependency('libadwaita-1'),
   dependency('libcurl'),
   dependency('json-c'),
 ]

@@ -21,10 +21,6 @@ struct _CocoTimeConvert {
 
 G_DEFINE_TYPE(CocoTimeConvert, coco_time_convert, ADW_TYPE_BIN)
 
-static void backspace_press(GtkEntry * entry, gpointer user_data) {
-  printf("%s\n", "ffffff");
-}
-
 static void now_bj_string_button_clicked(GtkButton * button, CocoTimeConvert * self)
 {
   GDateTime *time_now = g_date_time_new_now_local();
@@ -43,7 +39,7 @@ static void now_bj_unix_button_clicked(GtkButton * button, CocoTimeConvert * sel
 static void convert_to_unix_clicked(GtkButton * button, CocoTimeConvert * self)
 {
   GtkEntryBuffer * string_buffer = gtk_entry_get_buffer(self->input_string_time);
-  gchar *format_time = gtk_entry_buffer_get_text(string_buffer);
+  char *format_time = gtk_entry_buffer_get_text(string_buffer);
 
   if (strlen(format_time) != 19)
     {

@@ -27,9 +27,11 @@
             "name" : "coco",
             "builddir" : true,
             "buildsystem" : "meson",
-            "build-options": {
-		"build-args": [ "--share=network" ]
-	    },
+            "build-options" : {
+                "build-args" : [
+                    "--share=network"
+                ]
+            },
             "sources" : [
                 {
                     "type" : "git",
