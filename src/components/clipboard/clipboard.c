@@ -130,8 +130,6 @@ static void pull_clipboard_data(GtkButton *button, CocoClipboard *self)
 
   free(clipboard_response);
 
-  printf("%s\n", json_object_to_json_string(clipboard_response_json));
-
   json_object *errcode;
   json_object *errmsg;
   json_object *clipboard_data;
@@ -252,8 +250,6 @@ coco_clipboard_init(CocoClipboard *self)
   json_object *clipboard_response_json = json_tokener_parse(clipboard_response);
 
   free(clipboard_response);
-
-  printf("%s\n", json_object_to_json_string(clipboard_response_json));
 
   json_object *errcode;
   json_object *errmsg;
