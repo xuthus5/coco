@@ -32,29 +32,29 @@
 #include "components/base64/base64.h"
 #include "components/time_convert/time_convert.h"
 #include "components/clipboard/clipboard.h"
+#include "components/login/login.h"
 #include <adwaita.h>
 
 struct _CocoWindow {
-  AdwApplicationWindow parent_instance;
-  AdwFlap            *flap;
+    AdwApplicationWindow parent_instance;
+    AdwFlap            *flap;
 };
 
-G_DEFINE_TYPE(CocoWindow, coco_window, ADW_TYPE_APPLICATION_WINDOW)
+G_DEFINE_TYPE ( CocoWindow, coco_window, ADW_TYPE_APPLICATION_WINDOW )
 
 static void
-coco_window_class_init(CocoWindowClass *klass)
-{
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
+coco_window_class_init ( CocoWindowClass *klass ) {
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS ( klass );
 
-  gtk_widget_class_set_template_from_resource(widget_class, "/cc/xuthus/coco/coco-window.ui");
-  gtk_widget_class_bind_template_child(widget_class, CocoWindow, flap);
+    gtk_widget_class_set_template_from_resource ( widget_class, "/cc/xuthus/coco/coco-window.ui" );
+    gtk_widget_class_bind_template_child ( widget_class, CocoWindow, flap );
 }
 
 static void
-coco_window_init(CocoWindow *self)
-{
-  g_type_ensure(COCO_TYPE_BASE64);
-  g_type_ensure(COCO_TYPE_TIME_CONVERT);
-  g_type_ensure(COCO_TYPE_CLIPBOARD);
-  gtk_widget_init_template(GTK_WIDGET(self));
+coco_window_init ( CocoWindow *self ) {
+    g_type_ensure ( COCO_TYPE_BASE64 );
+    g_type_ensure ( COCO_TYPE_TIME_CONVERT );
+    g_type_ensure ( COCO_TYPE_CLIPBOARD );
+    g_type_ensure ( COCO_TYPE_LOGIN );
+    gtk_widget_init_template ( GTK_WIDGET ( self ) );
 }

@@ -6,5 +6,6 @@
     <file>components/base64/base64.ui</file>
     <file>components/time_convert/time_convert.ui</file>
     <file>components/clipboard/clipboard.ui</file>
+    <file>components/login/login.ui</file>
   </gresource>
 </gresources>
