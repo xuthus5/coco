@@ -94,19 +94,20 @@ char *post_response ( char *url, char * payload ) {
 
 static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpointer user_data ) {
     const char* title = adw_preferences_row_get_title ( &row->parent_instance );
-    GdkClipboard *clipboard = gtk_widget_get_clipboard ( row );
+    GdkClipboard *clipboard = gtk_widget_get_clipboard ( (GtkWidget *) row );
     gdk_clipboard_set_text ( clipboard, title );
     printf ( "copied: %s\n", title );
 }
 
 static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
+    printf("go there");
     // rebuild
     while ( 1 ) {
         GtkListBoxRow *row = gtk_list_box_get_row_at_index ( self->clipboard_list, 0 );
         if ( row == NULL ) {
             break;
         }
-        gtk_list_box_remove ( self->clipboard_list, row );
+        gtk_list_box_remove ( self->clipboard_list, (GtkWidget *) row );
     }
     char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list" );
 
@@ -134,9 +135,9 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
             if ( exist == 1 ) {
                 exist = json_object_object_get_ex ( clipboard_data, "data", &clipboard_list );
                 if ( exist != 1 ) {
-                    AdwActionRow *empty_node = adw_action_row_new();
-                    adw_preferences_row_set_title ( empty_node, "list empty..." );
-                    gtk_list_box_append ( self->clipboard_list, empty_node );
+                    AdwActionRow *empty_node = (AdwActionRow *) adw_action_row_new();
+                    adw_preferences_row_set_title ( (AdwPreferencesRow *)empty_node, "list empty..." );
+                    gtk_list_box_append ( self->clipboard_list, (GtkWidget *) empty_node );
                     return;
                 }
 
@@ -194,6 +195,10 @@ static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
     GdkClipboard *clipboard = gtk_widget_get_clipboard ( button );
 
     gdk_clipboard_read_text_async ( clipboard, NULL, get_text_from_clipboard, NULL );
+
+    sleep(1);
+
+    pull_clipboard_data(button, self);
 }
 
 static void
