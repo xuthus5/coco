@@ -15,6 +15,13 @@ struct _CocoClipboard {
 
 G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN )
 
+enum {
+  SIGNAL_ADD_TOAST,
+  SIGNAL_LAST_SIGNAL,
+};
+
+static guint signals[SIGNAL_LAST_SIGNAL];
+
 typedef struct {
     char *data;
     size_t size;
@@ -108,7 +115,7 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
         }
         gtk_list_box_remove ( self->clipboard_list, (GtkWidget *) row );
     }
-    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=10" );
+    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=6" );
 
     if ( clipboard_response == NULL ) {
         printf ( "接口调用出错,程序退出." );
@@ -191,7 +198,6 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, gpoin
     json_object *errcode;
     json_object *errmsg;
     json_bool exist = json_object_object_get_ex ( add_response_json, "err_code", &errcode );
-    AdwToastOverlay * toast = (AdwToastOverlay *) adw_toast_overlay_new();
     AdwToast * tip;
     if (exist == 1) {
         tip = (AdwToast *) adw_toast_new("push success! please pull new data.");
@@ -202,8 +208,7 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, gpoin
     }
 
     adw_toast_set_timeout(tip, 3);
-
-    adw_toast_overlay_add_toast(toast, tip);
+    g_signal_emit (clipboard, signals[SIGNAL_ADD_TOAST], 0, tip);
 }
 
 static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
@@ -222,6 +227,7 @@ coco_clipboard_class_init ( CocoClipboardClass *klass ) {
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, clipboard_list );
 
     gtk_widget_class_install_action (widget_class, "toast.undo", NULL, NULL);
+    gtk_widget_class_install_action (widget_class, "toast.add", NULL, NULL);
 }
 
 static void
@@ -231,7 +237,7 @@ coco_clipboard_init ( CocoClipboard *self ) {
     g_signal_connect ( self->push_data, "clicked", G_CALLBACK ( push_clipboard_data ), self );
     g_signal_connect ( self->clipboard_list, "row-activated", G_CALLBACK ( clipboard_row_activate ), self );
 
-    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=10" );
+    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=6" );
 
     if ( clipboard_response == NULL ) {
         printf ( "接口调用出错,程序退出.\n" );
