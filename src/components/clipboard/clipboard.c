@@ -220,6 +220,8 @@ coco_clipboard_class_init ( CocoClipboardClass *klass ) {
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, pull_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, push_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, clipboard_list );
+
+    gtk_widget_class_install_action (widget_class, "toast.undo", NULL, NULL);
 }
 
 static void
