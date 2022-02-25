@@ -109,7 +109,7 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
         }
         gtk_list_box_remove ( self->clipboard_list, (GtkWidget *) row );
     }
-    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list" );
+    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=10" );
 
     if ( clipboard_response == NULL ) {
         printf ( "接口调用出错,程序退出." );
@@ -197,7 +197,7 @@ static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
     gdk_clipboard_read_text_async ( clipboard, NULL, get_text_from_clipboard, NULL );
 
     sleep(1);
-
+    printf("go there 200");
     pull_clipboard_data(button, self);
 }
 
@@ -218,7 +218,7 @@ coco_clipboard_init ( CocoClipboard *self ) {
     g_signal_connect ( self->push_data, "clicked", G_CALLBACK ( push_clipboard_data ), self );
     g_signal_connect ( self->clipboard_list, "row-activated", G_CALLBACK ( clipboard_row_activate ), self );
 
-    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list" );
+    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=10" );
 
     if ( clipboard_response == NULL ) {
         printf ( "接口调用出错,程序退出.\n" );
