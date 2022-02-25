@@ -11,6 +11,7 @@ struct _CocoClipboard {
     GtkButton *pull_data;
     GtkButton *push_data;
     GtkListBox *clipboard_list;
+    AdwToastOverlay *toast_overlay;
 };
 
 G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN )
@@ -94,7 +95,8 @@ char *post_response ( char *url, char * payload ) {
 
 static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpointer user_data ) {
     const char* title = adw_preferences_row_get_title ( &row->parent_instance );
-    GdkClipboard *clipboard = gtk_widget_get_clipboard ( (GtkWidget *) row );
+    GdkClipboard *clipboard = gtk_widget_get_clipboard ( ( GtkWidget * ) row );
+
     gdk_clipboard_set_text ( clipboard, title );
     printf ( "copied: %s\n", title );
 }
@@ -106,7 +108,7 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
         if ( row == NULL ) {
             break;
         }
-        gtk_list_box_remove ( self->clipboard_list, (GtkWidget *) row );
+        gtk_list_box_remove ( self->clipboard_list, ( GtkWidget * ) row );
     }
     char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=6" );
 
@@ -134,9 +136,9 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
             if ( exist == 1 ) {
                 exist = json_object_object_get_ex ( clipboard_data, "data", &clipboard_list );
                 if ( exist != 1 ) {
-                    AdwActionRow *empty_node = (AdwActionRow *) adw_action_row_new();
-                    adw_preferences_row_set_title ( (AdwPreferencesRow *)empty_node, "list empty..." );
-                    gtk_list_box_append ( self->clipboard_list, (GtkWidget *) empty_node );
+                    AdwActionRow *empty_node = ( AdwActionRow * ) adw_action_row_new();
+                    adw_preferences_row_set_title ( ( AdwPreferencesRow * ) empty_node, "list empty..." );
+                    gtk_list_box_append ( self->clipboard_list, ( GtkWidget * ) empty_node );
                     return;
                 }
 
@@ -147,7 +149,7 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
                     json_object_object_get_ex ( item, "content", &content_data );
                     AdwActionRow *clipboard_node = adw_action_row_new();
                     adw_preferences_row_set_title ( clipboard_node, json_object_get_string ( content_data ) );
-                    GtkButton * suffix_copy = gtk_button_new ();
+                    GtkButton * suffix_copy = gtk_button_new();
                     gtk_button_set_icon_name ( suffix_copy, "edit-copy" );
                     adw_action_row_add_suffix ( clipboard_node, suffix_copy );
                     GtkStyleContext * style = gtk_widget_get_style_context ( suffix_copy );
@@ -166,7 +168,7 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
     }
 }
 
-void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, gpointer user_data ) {
+void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, CocoClipboard *self ) {
     GError *error = NULL;
     char *data = gdk_clipboard_read_text_finish ( clipboard, res, &error );
 
@@ -189,27 +191,32 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, gpoin
 
     json_object *add_response_json = json_tokener_parse ( add_response );
     json_object *errcode;
-    json_object *errmsg;
-    json_bool exist = json_object_object_get_ex ( add_response_json, "err_code", &errcode );
-    AdwToastOverlay * toaster = (AdwToastOverlay *) adw_toast_overlay_new();
+    json_object *errmessag;
+    json_bool errcode_exist = json_object_object_get_ex ( add_response_json, "err_code", &errcode );
+    json_bool errmsg_exist = json_object_object_get_ex ( add_response_json, "err_msg", &errmessag );
     AdwToast * toast;
-    if (exist == 0) {
-        toast = (AdwToast *) adw_toast_new("push success! please pull new data.");
+    if ( errcode_exist == 1 ) {
+        if ( json_object_get_int64 ( errcode ) == 0 ) {
+            toast = ( AdwToast * ) adw_toast_new ( "推送成功! 请刷新数据." );
+        } else {
+            if ( errmsg_exist == 1 ) {
+                const char * errmsg_string = json_object_get_string ( errmessag );
+                toast = ( AdwToast * ) adw_toast_new ( errmsg_string );
+            } else {
+                toast = ( AdwToast * ) adw_toast_new ( "未知错误!请稍后重试..." );
+            }
+        }
     } else {
-        json_object_object_get_ex ( add_response_json, "err_msg", &errmsg );
-        const char * errmsg_string = json_object_get_string(&errmsg);
-        toast = (AdwToast *) adw_toast_new(errmsg_string);
+        toast = ( AdwToast * ) adw_toast_new ( "网络异常!请稍后重试..." );
     }
-
-    adw_toast_set_timeout(toast, 3);
-    adw_toast_overlay_add_toast(toaster, toast);
-    return;
+    adw_toast_set_timeout ( toast, 3 );
+    adw_toast_overlay_add_toast ( self->toast_overlay, toast );
 }
 
 static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
     GdkClipboard *clipboard = gtk_widget_get_clipboard ( button );
 
-    gdk_clipboard_read_text_async ( clipboard, NULL, get_text_from_clipboard, NULL );
+    gdk_clipboard_read_text_async ( clipboard, NULL, get_text_from_clipboard, self );
 }
 
 static void
@@ -220,6 +227,7 @@ coco_clipboard_class_init ( CocoClipboardClass *klass ) {
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, pull_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, push_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, clipboard_list );
+    gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, toast_overlay );
 }
 
 static void
@@ -268,7 +276,7 @@ coco_clipboard_init ( CocoClipboard *self ) {
                     json_object_object_get_ex ( item, "content", &content_data );
                     AdwActionRow *clipboard_node = adw_action_row_new();
                     adw_preferences_row_set_title ( clipboard_node, json_object_get_string ( content_data ) );
-                    GtkButton * suffix_copy = gtk_button_new ();
+                    GtkButton * suffix_copy = gtk_button_new();
                     gtk_button_set_icon_name ( suffix_copy, "edit-copy" );
                     adw_action_row_add_suffix ( clipboard_node, suffix_copy );
                     GtkStyleContext * style = gtk_widget_get_style_context ( suffix_copy );

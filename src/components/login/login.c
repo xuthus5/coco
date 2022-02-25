@@ -21,6 +21,6 @@ coco_login_init ( CocoLogin *self ) {
 }
 
 CocoLogin * coco_login_new() {
-    CocoLogin * obj = g_object_new(COCO_TYPE_LOGIN, NULL);
+    CocoLogin * obj = g_object_new ( COCO_TYPE_LOGIN, NULL );
     return obj;
 }
