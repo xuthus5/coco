@@ -100,7 +100,6 @@ static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpoin
 }
 
 static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
-    printf("go there");
     // rebuild
     while ( 1 ) {
         GtkListBoxRow *row = gtk_list_box_get_row_at_index ( self->clipboard_list, 0 );
@@ -197,8 +196,71 @@ static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
     gdk_clipboard_read_text_async ( clipboard, NULL, get_text_from_clipboard, NULL );
 
     sleep(1);
-    printf("go there 200");
-    pull_clipboard_data(button, self);
+
+    // rebuild
+    while ( 1 ) {
+        GtkListBoxRow *row = gtk_list_box_get_row_at_index ( self->clipboard_list, 0 );
+        if ( row == NULL ) {
+            break;
+        }
+        gtk_list_box_remove ( self->clipboard_list, (GtkWidget *) row );
+    }
+    char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=10" );
+
+    if ( clipboard_response == NULL ) {
+        printf ( "接口调用出错,程序退出." );
+        return;
+    }
+    json_object *clipboard_response_json = json_tokener_parse ( clipboard_response );
+
+    free ( clipboard_response );
+
+    json_object *errcode;
+    json_object *errmsg;
+    json_object *clipboard_data;
+    json_object *clipboard_list;
+    json_bool exist = json_object_object_get_ex ( clipboard_response_json, "err_code", &errcode );
+
+    if ( exist == 1 ) {
+        if ( json_object_get_int ( errcode ) != 0 ) {
+            json_object_object_get_ex ( clipboard_response_json, "err_msg", &errmsg );
+            printf ( "接口调用出错: %s\n", json_object_get_string ( errmsg ) );
+            return;
+        } else {
+            exist = json_object_object_get_ex ( clipboard_response_json, "data", &clipboard_data );
+            if ( exist == 1 ) {
+                exist = json_object_object_get_ex ( clipboard_data, "data", &clipboard_list );
+                if ( exist != 1 ) {
+                    AdwActionRow *empty_node = (AdwActionRow *) adw_action_row_new();
+                    adw_preferences_row_set_title ( (AdwPreferencesRow *)empty_node, "list empty..." );
+                    gtk_list_box_append ( self->clipboard_list, (GtkWidget *) empty_node );
+                    return;
+                }
+
+                int len = json_object_array_length ( clipboard_list );
+                for ( int i = 0; i < len; i++ ) {
+                    json_object *item = json_object_array_get_idx ( clipboard_list, i );
+                    json_object *content_data;
+                    json_object_object_get_ex ( item, "content", &content_data );
+                    AdwActionRow *clipboard_node = adw_action_row_new();
+                    adw_preferences_row_set_title ( clipboard_node, json_object_get_string ( content_data ) );
+                    GtkButton * suffix_copy = gtk_button_new ();
+                    gtk_button_set_icon_name ( suffix_copy, "edit-copy" );
+                    adw_action_row_add_suffix ( clipboard_node, suffix_copy );
+                    GtkStyleContext * style = gtk_widget_get_style_context ( suffix_copy );
+                    gtk_style_context_add_class ( style, "flat" );
+                    adw_action_row_set_activatable_widget ( clipboard_node, suffix_copy );
+                    gtk_list_box_append ( self->clipboard_list, clipboard_node );
+                }
+            }
+        }
+    } else {
+        AdwActionRow *empty_node = adw_action_row_new();
+        adw_preferences_row_set_title ( empty_node, "list empty..." );
+        gtk_list_box_append ( self->clipboard_list, empty_node );
+        printf ( "接口请求内容: %s\n接口调用出错,程序退出.", clipboard_response );
+        return;
+    }
 }
 
 static void
