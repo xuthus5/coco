@@ -194,11 +194,11 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, gpoin
     AdwToastOverlay * toast = (AdwToastOverlay *) adw_toast_overlay_new();
     AdwToast * tip;
     if (exist == 1) {
-        AdwToast * tip = (AdwToast *) adw_toast_new("push success! please pull new data.");
+        tip = (AdwToast *) adw_toast_new("push success! please pull new data.");
     } else {
         json_object_object_get_ex ( add_response_json, "err_msg", &errmsg );
         const char * errmsg_string = json_object_get_string(&errmsg);
-        AdwToast * tip = (AdwToast *) adw_toast_new(errmsg_string);
+        tip = (AdwToast *) adw_toast_new(errmsg_string);
     }
 
     adw_toast_set_timeout(tip, 3);
