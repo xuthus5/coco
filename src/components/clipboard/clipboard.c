@@ -15,13 +15,6 @@ struct _CocoClipboard {
 
 G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN )
 
-enum {
-  SIGNAL_ADD_TOAST,
-  SIGNAL_LAST_SIGNAL,
-};
-
-static guint signals[SIGNAL_LAST_SIGNAL];
-
 typedef struct {
     char *data;
     size_t size;
@@ -198,17 +191,19 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, gpoin
     json_object *errcode;
     json_object *errmsg;
     json_bool exist = json_object_object_get_ex ( add_response_json, "err_code", &errcode );
-    AdwToast * tip;
-    if (exist == 1) {
-        tip = (AdwToast *) adw_toast_new("push success! please pull new data.");
+    AdwToastOverlay * toaster = (AdwToastOverlay *) adw_toast_overlay_new();
+    AdwToast * toast;
+    if (exist == 0) {
+        toast = (AdwToast *) adw_toast_new("push success! please pull new data.");
     } else {
         json_object_object_get_ex ( add_response_json, "err_msg", &errmsg );
         const char * errmsg_string = json_object_get_string(&errmsg);
-        tip = (AdwToast *) adw_toast_new(errmsg_string);
+        toast = (AdwToast *) adw_toast_new(errmsg_string);
     }
 
-    adw_toast_set_timeout(tip, 3);
-    g_signal_emit (clipboard, signals[SIGNAL_ADD_TOAST], 0, tip);
+    adw_toast_set_timeout(toast, 3);
+    adw_toast_overlay_add_toast(toaster, toast);
+    return;
 }
 
 static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
@@ -225,9 +220,6 @@ coco_clipboard_class_init ( CocoClipboardClass *klass ) {
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, pull_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, push_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, clipboard_list );
-
-    gtk_widget_class_install_action (widget_class, "toast.undo", NULL, NULL);
-    gtk_widget_class_install_action (widget_class, "toast.add", NULL, NULL);
 }
 
 static void
