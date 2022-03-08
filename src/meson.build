@@ -8,7 +8,7 @@ coco_sources = [
   'components/base64/lib/buffer.c',
   'components/time_convert/time_convert.c',
   'components/clipboard/clipboard.c',
-  'components/login/login.c',
+  'components/upyun_upload/upload.c',
 ]
 
 coco_deps = [
