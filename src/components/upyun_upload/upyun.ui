@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="CocoUpYunUpload" parent="AdwBin">
+    <property name="child">
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <property name="child">
+          <object class="AdwClamp">
+            <property name="maximum-size">500</property>
+            <property name="tightening-threshold">350</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="valign">center</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">12</property>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <child>
+                      <object class="GtkListBox" id="clipboard_list">
+                        <property name="activate-on-single-click">True</property>
+                        <style>
+                          <class name="boxed-list"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <child>
+                      <object class="GtkBox">
+                        <property name="halign">center</property>
+                        <property name="margin-top">5</property>
+                        <property name="margin-bottom">5</property>
+                        <property name="spacing">10</property>
+                        <child>
+                          <object class="GtkButton" id="pull_data">
+                            <property name="label" translatable="yes">pull</property>
+                            <property name="focusable">1</property>
+                            <property name="receives-default">1</property>
+                            <property name="tooltip-text">suggested-action</property>
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="push_data">
+                            <property name="label" translatable="yes">push</property>
+                            <property name="focusable">1</property>
+                            <property name="receives-default">1</property>
+                            <property name="tooltip-text">destructive-action</property>
+                            <style>
+                              <class name="destructive-action"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>
+
