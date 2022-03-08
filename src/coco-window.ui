@@ -79,7 +79,7 @@
                                         <property name="name">upyun_upload</property>
                                         <property name="title">UpYun Upload</property>
                                         <property name="child">
-                                            <object class="CocoUpyunUpload"/>
+                                            <object class="CocoUpYunUpload"/>
                                         </property>
                                     </object>
                                 </child>
