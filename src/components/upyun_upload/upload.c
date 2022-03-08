@@ -4,7 +4,6 @@
 #include <curl/curl.h>
 #include <json.h>
 #include "upload.h"
-#include "../request/request.h"
 
 struct _CocoUpYunUpload {
 	AdwBin parent_instance;
