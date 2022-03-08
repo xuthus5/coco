@@ -55,6 +55,6 @@ coco_window_init ( CocoWindow *self ) {
     g_type_ensure ( COCO_TYPE_BASE64 );
     g_type_ensure ( COCO_TYPE_TIME_CONVERT );
     g_type_ensure ( COCO_TYPE_CLIPBOARD );
-    g_type_ensure ( COCO_TYPE_UPYUNUPLOAD );
+    g_type_ensure ( COCO_TYPE_UPYUN_UPLOAD );
     gtk_widget_init_template ( GTK_WIDGET ( self ) );
 }
