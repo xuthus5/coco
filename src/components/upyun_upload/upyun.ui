@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="CocoUpYunUpload" parent="AdwBin">
+  <template class="CocoUpyunUpload" parent="AdwBin">
     <property name="child">
       <object class="AdwToastOverlay" id="toast_overlay">
         <property name="child">
