@@ -32,7 +32,7 @@
 #include "components/base64/base64.h"
 #include "components/time_convert/time_convert.h"
 #include "components/clipboard/clipboard.h"
-#include "components/login/login.h"
+#include "components/upyun_upload/upyun.h"
 #include <adwaita.h>
 
 struct _CocoWindow {
@@ -55,6 +55,6 @@ coco_window_init ( CocoWindow *self ) {
     g_type_ensure ( COCO_TYPE_BASE64 );
     g_type_ensure ( COCO_TYPE_TIME_CONVERT );
     g_type_ensure ( COCO_TYPE_CLIPBOARD );
-    g_type_ensure ( COCO_TYPE_LOGIN );
+    g_type_ensure ( COCO_TYPE_UPYUNUPLOAD );
     gtk_widget_init_template ( GTK_WIDGET ( self ) );
 }
