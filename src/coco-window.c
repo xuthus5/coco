@@ -32,7 +32,7 @@
 #include "components/base64/base64.h"
 #include "components/time_convert/time_convert.h"
 #include "components/clipboard/clipboard.h"
-#include "components/upyun_upload/upyun.h"
+#include "components/upyun_upload/upload.h"
 #include <adwaita.h>
 
 struct _CocoWindow {

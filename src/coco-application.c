@@ -30,7 +30,6 @@
 #include "coco-application.h"
 #include "coco-window.h"
 #include <adwaita.h>
-#include "components/login/login.h"
 
 struct _CocoApplication {
     AdwApplication parent_instance;
