@@ -2,7 +2,6 @@ coco_sources = [
   'main.c',
   'coco-window.c',
   'coco-application.c',
-  'components/request/request.c',
   'components/base64/base64.c',
   'components/base64/lib/encode.c',
   'components/base64/lib/decode.c',
@@ -10,6 +9,7 @@ coco_sources = [
   'components/time_convert/time_convert.c',
   'components/clipboard/clipboard.c',
   'components/upyun_upload/upload.c',
+  'components/request/request.c',
 ]
 
 coco_deps = [
