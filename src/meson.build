@@ -2,6 +2,7 @@ coco_sources = [
   'main.c',
   'coco-window.c',
   'coco-application.c',
+  'components/request/request.c',
   'components/base64/base64.c',
   'components/base64/lib/encode.c',
   'components/base64/lib/decode.c',

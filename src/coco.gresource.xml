@@ -7,5 +7,6 @@
     <file>components/time_convert/time_convert.ui</file>
     <file>components/clipboard/clipboard.ui</file>
     <file>components/upyun_upload/upload.ui</file>
+    <file compressed="true">style.css</file>
   </gresource>
 </gresources>

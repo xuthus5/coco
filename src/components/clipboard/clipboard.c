@@ -5,6 +5,7 @@
 #include <curl/curl.h>
 #include <json.h>
 #include "clipboard.h"
+#include "../request/request.h"
 
 struct _CocoClipboard {
     AdwBin parent_instance;
@@ -15,83 +16,6 @@ struct _CocoClipboard {
 };
 
 G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN )
-
-typedef struct {
-    char *data;
-    size_t size;
-} memory_response;
-
-size_t memory_response_write_func ( void *src, size_t size, size_t nmemb, memory_response *dst ) {
-    size_t data_size = dst->size + size * nmemb;
-
-    dst->data = realloc ( dst->data, data_size + 1 );
-    if ( dst->data == NULL ) {
-        fprintf ( stderr, "realloc() failed\n" );
-        exit ( EXIT_FAILURE );
-    }
-    memcpy ( dst->data + dst->size, src, size * nmemb );
-    dst->data[data_size] = '\0';
-    dst->size = data_size;
-    return size * nmemb;
-}
-
-void init_memory_response ( memory_response *s ) {
-    s->size = 0;
-    s->data = malloc ( s->size + 1 );
-    if ( s->data == NULL ) {
-        fprintf ( stderr, "malloc() failed\n" );
-        exit ( EXIT_FAILURE );
-    }
-    s->data[0] = '\0';
-}
-
-char *get_response ( char *url ) {
-    CURL *curl;
-    CURLcode res;
-    memory_response resp;
-
-    init_memory_response ( &resp );
-    curl = curl_easy_init();
-    if ( curl ) {
-        curl_easy_setopt ( curl, CURLOPT_URL, url );
-        curl_easy_setopt ( curl, CURLOPT_HTTPGET, 1 );
-        curl_easy_setopt ( curl, CURLOPT_TIMEOUT, 1 );
-        curl_easy_setopt ( curl, CURLOPT_WRITEFUNCTION, memory_response_write_func );
-        curl_easy_setopt ( curl, CURLOPT_WRITEDATA, &resp );
-
-        res = curl_easy_perform ( curl );
-        curl_easy_cleanup ( curl );
-        return resp.data;
-    }
-    return NULL;
-}
-
-char *post_response ( char *url, char * payload ) {
-    CURL *curl;
-    CURLcode res;
-    memory_response resp;
-
-    init_memory_response ( &resp );
-    curl = curl_easy_init();
-    struct curl_slist *headers = NULL;
-
-    headers = curl_slist_append ( headers, "Accept: application/json" );
-    headers = curl_slist_append ( headers, "Content-Type: application/json; charset: utf-8" );
-    if ( curl ) {
-        curl_easy_setopt ( curl, CURLOPT_URL, url );
-        curl_easy_setopt ( curl, CURLOPT_HTTPPOST, 1 );
-        curl_easy_setopt ( curl, CURLOPT_TIMEOUT, 1 );
-        curl_easy_setopt ( curl, CURLOPT_HTTPHEADER, headers );
-        curl_easy_setopt ( curl, CURLOPT_WRITEFUNCTION, memory_response_write_func );
-        curl_easy_setopt ( curl, CURLOPT_WRITEDATA, &resp );
-        curl_easy_setopt ( curl, CURLOPT_POSTFIELDS, payload );
-
-        res = curl_easy_perform ( curl );
-        curl_easy_cleanup ( curl );
-        return resp.data;
-    }
-    return NULL;
-}
 
 static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpointer user_data ) {
     const char* title = adw_preferences_row_get_title ( &row->parent_instance );
@@ -223,6 +147,8 @@ static void
 coco_clipboard_class_init ( CocoClipboardClass *klass ) {
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS ( klass );
 
+  printf("data: %s", "hello world");
+
     gtk_widget_class_set_template_from_resource ( widget_class, "/cc/xuthus/coco/components/clipboard/clipboard.ui" );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, pull_data );
     gtk_widget_class_bind_template_child ( widget_class, CocoClipboard, push_data );
@@ -237,12 +163,15 @@ coco_clipboard_init ( CocoClipboard *self ) {
     g_signal_connect ( self->push_data, "clicked", G_CALLBACK ( push_clipboard_data ), self );
     g_signal_connect ( self->clipboard_list, "row-activated", G_CALLBACK ( clipboard_row_activate ), self );
 
+  printf("data: %s", "hello world");
+
     char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=6" );
 
     if ( clipboard_response == NULL ) {
         printf ( "接口调用出错,程序退出.\n" );
         return;
     }
+
     json_object *clipboard_response_json = json_tokener_parse ( clipboard_response );
 
     free ( clipboard_response );
