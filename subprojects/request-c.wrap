@@ -1,0 +1,6 @@
+[wrap-git]
+url = https://github.com/xuthus5/request-c.git
+revision = head
+
+[provide]
+request-c = request_c_dep
