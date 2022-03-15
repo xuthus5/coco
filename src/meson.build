@@ -9,7 +9,6 @@ coco_sources = [
   'components/time_convert/time_convert.c',
   'components/clipboard/clipboard.c',
   'components/upyun_upload/upload.c',
-  'components/request/request.c',
 ]
 
 coco_deps = [
@@ -17,6 +16,7 @@ coco_deps = [
   dependency('libadwaita-1'),
   dependency('libcurl'),
   dependency('json-c'),
+  dependency('request'),
 ]
 
 gnome = import('gnome')

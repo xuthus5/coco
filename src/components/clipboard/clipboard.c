@@ -5,7 +5,7 @@
 #include <curl/curl.h>
 #include <json.h>
 #include "clipboard.h"
-#include "../request/request.h"
+#include <request.h>
 
 struct _CocoClipboard {
     AdwBin parent_instance;
