@@ -4,8 +4,8 @@
 #include <adwaita.h>
 #include <curl/curl.h>
 #include <json.h>
-#include "clipboard.h"
 #include <request.h>
+#include "clipboard.h"
 
 struct _CocoClipboard {
     AdwBin parent_instance;
@@ -17,7 +17,8 @@ struct _CocoClipboard {
 
 G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN )
 
-static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpointer user_data ) {
+static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpointer user_data )
+{
     const char* title = adw_preferences_row_get_title ( &row->parent_instance );
     GdkClipboard *clipboard = gtk_widget_get_clipboard ( ( GtkWidget * ) row );
 
@@ -25,7 +26,8 @@ static void clipboard_row_activate ( GtkListBox *list, AdwActionRow * row, gpoin
     printf ( "copied: %s\n", title );
 }
 
-static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
+static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self )
+{
     // rebuild
     while ( 1 ) {
         GtkListBoxRow *row = gtk_list_box_get_row_at_index ( self->clipboard_list, 0 );
@@ -35,9 +37,9 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
         gtk_list_box_remove ( self->clipboard_list, ( GtkWidget * ) row );
     }
 
-                                                                             struct curl_slist *headers = NULL;
-   headers = curl_slist_append(headers, "Accept: application/json");
-  headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, "Accept: application/json");
+    headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 
     char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=6", headers );
 
@@ -97,7 +99,8 @@ static void pull_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
     }
 }
 
-void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, CocoClipboard *self ) {
+void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, CocoClipboard *self )
+{
     GError *error = NULL;
     char *data = gdk_clipboard_read_text_finish ( clipboard, res, &error );
 
@@ -114,9 +117,9 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, CocoC
     json_object_object_add ( _tbody, "text", json_object_new_string ( data ) );
     const char * payload = json_object_to_json_string ( _tbody );
 
-  struct curl_slist *headers = NULL;
-   headers = curl_slist_append(headers, "Accept: application/json");
-  headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, "Accept: application/json");
+    headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 
     char *add_response = post_response ( "https://central.xuthus.cc/api/clipboard/add", payload, headers );
 
@@ -146,14 +149,16 @@ void get_text_from_clipboard ( GdkClipboard *clipboard, GAsyncResult *res, CocoC
     adw_toast_overlay_add_toast ( self->toast_overlay, toast );
 }
 
-static void push_clipboard_data ( GtkButton *button, CocoClipboard *self ) {
+static void push_clipboard_data ( GtkButton *button, CocoClipboard *self )
+{
     GdkClipboard *clipboard = gtk_widget_get_clipboard ( button );
 
     gdk_clipboard_read_text_async ( clipboard, NULL, get_text_from_clipboard, self );
 }
 
 static void
-coco_clipboard_class_init ( CocoClipboardClass *klass ) {
+coco_clipboard_class_init ( CocoClipboardClass *klass )
+{
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS ( klass );
 
     gtk_widget_class_set_template_from_resource ( widget_class, "/cc/xuthus/coco/components/clipboard/clipboard.ui" );
@@ -164,15 +169,16 @@ coco_clipboard_class_init ( CocoClipboardClass *klass ) {
 }
 
 static void
-coco_clipboard_init ( CocoClipboard *self ) {
+coco_clipboard_init ( CocoClipboard *self )
+{
     gtk_widget_init_template ( GTK_WIDGET ( self ) );
     g_signal_connect ( self->pull_data, "clicked", G_CALLBACK ( pull_clipboard_data ), self );
     g_signal_connect ( self->push_data, "clicked", G_CALLBACK ( push_clipboard_data ), self );
     g_signal_connect ( self->clipboard_list, "row-activated", G_CALLBACK ( clipboard_row_activate ), self );
 
-  struct curl_slist *headers = NULL;
-   headers = curl_slist_append(headers, "Accept: application/json");
-  headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, "Accept: application/json");
+    headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 
     char *clipboard_response = get_response ( "https://central.xuthus.cc/api/clipboard/list?page_size=6", headers );
 

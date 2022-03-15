@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include <json.h>
 #include "upload.h"
+#include <request.h>
 
 struct _CocoUpYunUpload {
 	AdwBin parent_instance;
@@ -26,9 +27,11 @@ coco_upyun_upload_init( CocoUpYunUpload *self )
 {
 	gtk_widget_init_template( GTK_WIDGET( self ) );
 
-  printf("data: %s", "hello world");
+  struct curl_slist *headers = NULL;
+   headers = curl_slist_append(headers, "Accept: application/json");
+  headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 
-	char *list_response = get_response( "https://central.xuthus.cc/api/storage/upyun/list" );
+	char *list_response = get_response( "https://central.xuthus.cc/api/storage/upyun/list", headers );
 
 	if ( list_response == NULL ) {
 		printf( "接口调用出错,程序退出.\n" );

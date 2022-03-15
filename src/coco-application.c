@@ -39,7 +39,8 @@ G_DEFINE_TYPE ( CocoApplication, coco_application, ADW_TYPE_APPLICATION )
 
 CocoApplication *
 coco_application_new ( gchar *application_id,
-                       GApplicationFlags  flags ) {
+                       GApplicationFlags  flags )
+{
     return g_object_new ( COCO_TYPE_APPLICATION,
                           "application-id", application_id,
                           "flags", flags,
@@ -47,14 +48,16 @@ coco_application_new ( gchar *application_id,
 }
 
 static void
-coco_application_finalize ( GObject *object ) {
+coco_application_finalize ( GObject *object )
+{
     CocoApplication *self = ( CocoApplication * ) object;
 
     G_OBJECT_CLASS ( coco_application_parent_class )->finalize ( object );
 }
 
 static void
-coco_application_activate ( GApplication *app ) {
+coco_application_activate ( GApplication *app )
+{
     GtkWindow *window;
 
     /* It's good practice to check your parameters at the beginning of the
@@ -78,7 +81,8 @@ coco_application_activate ( GApplication *app ) {
 
 
 static void
-coco_application_class_init ( CocoApplicationClass *klass ) {
+coco_application_class_init ( CocoApplicationClass *klass )
+{
     GObjectClass *object_class = G_OBJECT_CLASS ( klass );
     GApplicationClass *app_class = G_APPLICATION_CLASS ( klass );
 
@@ -96,7 +100,8 @@ coco_application_class_init ( CocoApplicationClass *klass ) {
 static void
 coco_application_show_about ( GSimpleAction *action,
                               GVariant      *parameter,
-                              gpointer       user_data ) {
+                              gpointer       user_data )
+{
     CocoApplication *self = COCO_APPLICATION ( user_data );
     GtkWindow *window = NULL;
     const gchar *authors[] = {"xuthus5", NULL};
@@ -114,7 +119,8 @@ coco_application_show_about ( GSimpleAction *action,
 
 
 static void
-coco_application_init ( CocoApplication *self ) {
+coco_application_init ( CocoApplication *self )
+{
     GSimpleAction *quit_action = g_simple_action_new ( "quit", NULL );
     g_signal_connect_swapped ( quit_action, "activate", G_CALLBACK ( g_application_quit ), self );
     g_action_map_add_action ( G_ACTION_MAP ( self ), G_ACTION ( quit_action ) );

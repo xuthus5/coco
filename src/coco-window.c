@@ -43,14 +43,16 @@ struct _CocoWindow {
 G_DEFINE_TYPE ( CocoWindow, coco_window, ADW_TYPE_APPLICATION_WINDOW )
 
 static void
-coco_window_class_init ( CocoWindowClass *klass ) {
+coco_window_class_init ( CocoWindowClass *klass )
+{
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS ( klass );
     gtk_widget_class_set_template_from_resource ( widget_class, "/cc/xuthus/coco/coco-window.ui" );
     gtk_widget_class_bind_template_child ( widget_class, CocoWindow, flap );
 }
 
 static void
-coco_window_init ( CocoWindow *self ) {
+coco_window_init ( CocoWindow *self )
+{
     g_type_ensure ( COCO_TYPE_BASE64 );
     g_type_ensure ( COCO_TYPE_TIME_CONVERT );
     g_type_ensure ( COCO_TYPE_CLIPBOARD );
