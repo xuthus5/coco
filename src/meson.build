@@ -16,7 +16,7 @@ coco_deps = [
   dependency('libadwaita-1'),
   dependency('libcurl'),
   dependency('json-c'),
-  dependency('request'),
+  dependency('request-c'),
 ]
 
 gnome = import('gnome')
