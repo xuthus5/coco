@@ -1,4 +1,5 @@
 [wrap-git]
+directory = request-c
 url = https://github.com/xuthus5/request-c.git
 revision = head
 
