@@ -11,12 +11,18 @@ coco_sources = [
   'components/upyun_upload/upload.c',
 ]
 
+request_c_dep = dependency('request-c', required : true)
+if not request_c_dep.found()
+  request_c_proj = subproject('request-c')
+  request_c_dep = request_c_proj.get_variable('request_c_dep')
+endif
+
 coco_deps = [
+  request_c_dep,
   dependency('gtk4'),
   dependency('libadwaita-1'),
   dependency('libcurl'),
   dependency('json-c'),
-  dependency('request-c'),
 ]
 
 gnome = import('gnome')
