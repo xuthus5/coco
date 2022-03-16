@@ -72,12 +72,17 @@ coco_upyun_upload_init(CocoUpYunUpload *self)
 		json_object_object_get_ex(item, "time", &file_time);
 		AdwActionRow *file_node = adw_action_row_new();
 		adw_preferences_row_set_title(file_node, json_object_get_string(file_name));
-		GtkButton * suffix_copy = gtk_button_new();
-		gtk_button_set_icon_name(suffix_copy, "edit-copy");
-		adw_action_row_add_suffix(file_node, suffix_copy);
-		GtkStyleContext * style = gtk_widget_get_style_context(suffix_copy);
-		gtk_style_context_add_class(style, "flat");
-		adw_action_row_set_activatable_widget(file_node, suffix_copy);
+        if (json_object_get_boolean (file_type)) {
+            adw_action_row_set_icon_name (file_node, "folder");
+        } else {
+            adw_action_row_set_icon_name (file_node, "text-x-generic");
+        }
+		/* GtkButton * suffix_copy = gtk_button_new(); */
+		/* gtk_button_set_icon_name(suffix_copy, "edit-copy"); */
+		/* adw_action_row_add_suffix(file_node, suffix_copy); */
+		/* GtkStyleContext * style = gtk_widget_get_style_context(suffix_copy); */
+		/* gtk_style_context_add_class(style, "flat"); */
+		/* adw_action_row_set_activatable_widget(file_node, suffix_copy); */
 		gtk_list_box_append(self->file_list, file_node);
 	}
 }
