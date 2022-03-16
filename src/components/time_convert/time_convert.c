@@ -44,25 +44,28 @@ static void convert_to_unix_clicked ( GtkButton * button, CocoTimeConvert * self
 
     printf ( "receive time: %s\n", format_time );
 
-    format_time[4] = format_time[7] = format_time[10] = '\0';
-    format_time[13] = format_time[16] = '\0';
+    char _t_format_time[20];
+    strncpy(_t_format_time, format_time, 19);
+
+    _t_format_time[4] = _t_format_time[7] = _t_format_time[10] = '\0';
+    _t_format_time[13] = _t_format_time[16] = '\0';
 
     struct tm time_stamp = { 0 };
 
-    time_stamp.tm_year = atoi ( &format_time[0] ) - 1900;
-    time_stamp.tm_mon = atoi ( &format_time[5] ) - 1;
-    time_stamp.tm_mday = atoi ( &format_time[8] );
-    time_stamp.tm_hour = atoi ( &format_time[11] );
-    time_stamp.tm_min = atoi ( &format_time[14] );
-    time_stamp.tm_sec = atoi ( &format_time[17] );
+    time_stamp.tm_year = atoi ( &_t_format_time[0] ) - 1900;
+    time_stamp.tm_mon = atoi ( &_t_format_time[5] ) - 1;
+    time_stamp.tm_mday = atoi ( &_t_format_time[8] );
+    time_stamp.tm_hour = atoi ( &_t_format_time[11] );
+    time_stamp.tm_min = atoi ( &_t_format_time[14] );
+    time_stamp.tm_sec = atoi ( &_t_format_time[17] );
 
     printf ( "year: %d, mon: %d, day: %d, hour: %d, min: %d, sec: %d\n",
-             atoi ( &format_time[0] ), atoi ( &format_time[5] ), atoi ( &format_time[8] ),
-             atoi ( &format_time[11] ), atoi ( &format_time[14] ), atoi ( &format_time[17] ) );
+             atoi ( &_t_format_time[0] ), atoi ( &_t_format_time[5] ), atoi ( &_t_format_time[8] ),
+             atoi ( &_t_format_time[11] ), atoi ( &_t_format_time[14] ), atoi ( &_t_format_time[17] ) );
 
     time_t t = mktime ( &time_stamp );
 
-    char *unix_data[10];
+    char unix_data[10];
 
     sprintf ( unix_data, "%d", t );
     GtkEntryBuffer * string_time_buffer = gtk_entry_get_buffer ( self->output_unix_time );
