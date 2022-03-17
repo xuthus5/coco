@@ -137,6 +137,11 @@ static void mkdir_from_path(GtkButton *button, CocoUpYunUpload *self) {
     mkdir_to_server (now_path);
 }
 
+static void upload_to_path(GtkButton *button, CocoUpYunUpload *self)
+{
+    GtkFileChooser * chooser = gtk_file_chooser_widget_new (GTK_FILE_CHOOSER_ACTION_OPEN)
+}
+
 static void
 coco_upyun_upload_class_init(CocoUpYunUploadClass *klass) {
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
@@ -156,6 +161,7 @@ coco_upyun_upload_init(CocoUpYunUpload *self) {
     g_signal_connect(self->go_back, "clicked", G_CALLBACK(get_and_set_parent_path), self);
     g_signal_connect(self->go_to, "clicked", G_CALLBACK(get_file_list_from_path), self);
     g_signal_connect(self->mkdir_button, "clicked", G_CALLBACK(mkdir_from_path), self);
+    g_signal_connect(self->upload_button, "clicked", G_CALLBACK(upload_to_path), self);
 
     set_current_path(self->current_path, "/");
     get_file_list_from_path(NULL, self);
