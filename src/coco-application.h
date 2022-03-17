@@ -36,9 +36,9 @@ G_BEGIN_DECLS
 
 #define COCO_TYPE_APPLICATION (coco_application_get_type())
 
-G_DECLARE_FINAL_TYPE ( CocoApplication, coco_application, COCO, APPLICATION, AdwApplication )
+G_DECLARE_FINAL_TYPE(CocoApplication, coco_application, COCO, APPLICATION, AdwApplication)
 
-CocoApplication *coco_application_new ( gchar *application_id,
-                                        GApplicationFlags  flags );
+CocoApplication *coco_application_new(gchar *application_id,
+                                      GApplicationFlags flags);
 
 G_END_DECLS

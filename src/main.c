@@ -32,18 +32,19 @@
 #include "coco-application.h"
 
 int
-main ( int   argc,
-       char *argv[] ) {
-    g_autoptr ( CocoApplication ) app = NULL;
+main(int argc,
+     char *argv[]) {
+    g_autoptr(CocoApplication)
+    app = NULL;
     int ret;
 
-    bindtextdomain ( GETTEXT_PACKAGE, LOCALEDIR );
-    bind_textdomain_codeset ( GETTEXT_PACKAGE, "UTF-8" );
-    textdomain ( GETTEXT_PACKAGE );
+    bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    textdomain(GETTEXT_PACKAGE);
 
-    app = coco_application_new ( "cc.xuthus.coco", G_APPLICATION_FLAGS_NONE );
+    app = coco_application_new("cc.xuthus.coco", G_APPLICATION_FLAGS_NONE);
 
-    ret = g_application_run ( G_APPLICATION ( app ), argc, argv );
+    ret = g_application_run(G_APPLICATION(app), argc, argv);
 
     return ret;
 }

@@ -36,6 +36,6 @@ G_BEGIN_DECLS
 
 #define COCO_TYPE_WINDOW (coco_window_get_type())
 
-G_DECLARE_FINAL_TYPE ( CocoWindow, coco_window, COCO, WINDOW, AdwApplicationWindow )
+G_DECLARE_FINAL_TYPE(CocoWindow, coco_window, COCO, WINDOW, AdwApplicationWindow)
 
 G_END_DECLS

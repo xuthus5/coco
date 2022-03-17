@@ -1,116 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="libadwaita" version="1.0"/>
-  <template class="CocoUpYunUpload" parent="AdwBin">
-    <property name="child">
-      <object class="AdwToastOverlay" id="toast_overlay">
+    <requires lib="gtk" version="4.0"/>
+    <requires lib="libadwaita" version="1.0"/>
+    <template class="CocoUpYunUpload" parent="AdwBin">
         <property name="child">
-          <object class="AdwClamp">
-            <property name="maximum-size">500</property>
-            <property name="tightening-threshold">350</property>
-            <property name="child">
-              <object class="GtkBox">
-                <property name="valign">center</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">12</property>
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="GtkBox">
-                        <property name="halign">center</property>
-                        <property name="margin-top">5</property>
-                        <property name="margin-bottom">5</property>
-                        <property name="spacing">10</property>
-                        <child>
-                          <object class="GtkButton" id="go_back">
-                            <property name="icon-name">go-previous</property>
-                            <property name="focusable">1</property>
-                            <property name="receives-default">1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkEntry" id="current_path">
-                            <property name="max-length">20</property>
-                            <property name="max-width-chars">20</property>
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="go_to">
-                            <property name="label">Go!</property>
-                            <property name="focusable">1</property>
-                            <property name="receives-default">1</property>
-                            <property name="tooltip-text">suggested-action</property>
-                            <style>
-                              <class name="suggested-action"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="GtkListBox" id="file_list">
-                        <property name="activate-on-single-click">True</property>
-                        <style>
-                          <class name="boxed-list"/>
-                        </style>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="GtkBox">
-                        <property name="halign">center</property>
-                        <property name="margin-top">5</property>
-                        <property name="margin-bottom">5</property>
-                        <property name="spacing">10</property>
-                        <child>
-                          <object class="GtkButton" id="pull_data">
-                            <property name="label" translatable="yes">prev</property>
-                            <property name="focusable">1</property>
-                            <property name="receives-default">1</property>
-                            <property name="tooltip-text">suggested-action</property>
-                            <style>
-                              <class name="suggested-action"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="update_data">
-                            <property name="label" translatable="yes">upload</property>
-                            <property name="name">upload-button</property>
-                            <property name="focusable">1</property>
-                            <property name="receives-default">1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="push_data">
-                            <property name="label" translatable="yes">next</property>
-                            <property name="focusable">1</property>
-                            <property name="receives-default">1</property>
-                            <property name="tooltip-text">suggested-action</property>
-                            <style>
-                              <class name="suggested-action"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </property>
-          </object>
+            <object class="AdwToastOverlay" id="toast_overlay">
+                <property name="child">
+                    <object class="AdwClamp">
+                        <property name="maximum-size">500</property>
+                        <property name="tightening-threshold">350</property>
+                        <property name="child">
+                            <object class="GtkBox">
+                                <property name="valign">center</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">12</property>
+                                <child>
+                                    <object class="AdwPreferencesGroup">
+                                        <child>
+                                            <object class="GtkBox">
+                                                <property name="halign">center</property>
+                                                <property name="margin-top">5</property>
+                                                <property name="margin-bottom">5</property>
+                                                <property name="spacing">10</property>
+                                                <child>
+                                                    <object class="GtkButton" id="go_back">
+                                                        <property name="icon-name">go-previous</property>
+                                                        <property name="focusable">1</property>
+                                                        <property name="receives-default">1</property>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkEntry" id="current_path">
+                                                        <property name="max-length">20</property>
+                                                        <property name="max-width-chars">20</property>
+                                                        <property name="valign">center</property>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkButton" id="go_to">
+                                                        <property name="label">Go!</property>
+                                                        <property name="focusable">1</property>
+                                                        <property name="receives-default">1</property>
+                                                        <property name="tooltip-text">suggested-action</property>
+                                                        <style>
+                                                            <class name="suggested-action"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup">
+                                        <child>
+                                            <object class="GtkListBox" id="file_list">
+                                                <property name="activate-on-single-click">True</property>
+                                                <style>
+                                                    <class name="boxed-list"/>
+                                                </style>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup">
+                                        <child>
+                                            <object class="GtkBox">
+                                                <property name="halign">center</property>
+                                                <property name="margin-top">5</property>
+                                                <property name="margin-bottom">5</property>
+                                                <property name="spacing">10</property>
+                                                <child>
+                                                    <object class="GtkButton" id="pull_data">
+                                                        <property name="label" translatable="yes">prev</property>
+                                                        <property name="focusable">1</property>
+                                                        <property name="receives-default">1</property>
+                                                        <property name="tooltip-text">suggested-action</property>
+                                                        <style>
+                                                            <class name="suggested-action"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkButton" id="update_data">
+                                                        <property name="label" translatable="yes">upload</property>
+                                                        <property name="name">upload-button</property>
+                                                        <property name="focusable">1</property>
+                                                        <property name="receives-default">1</property>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkButton" id="push_data">
+                                                        <property name="label" translatable="yes">next</property>
+                                                        <property name="focusable">1</property>
+                                                        <property name="receives-default">1</property>
+                                                        <property name="tooltip-text">suggested-action</property>
+                                                        <style>
+                                                            <class name="suggested-action"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </property>
+                    </object>
+                </property>
+            </object>
         </property>
-      </object>
-    </property>
-  </template>
+    </template>
 </interface>
 

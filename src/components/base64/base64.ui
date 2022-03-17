@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="libadwaita" version="1.0"/>
-  <template class="CocoBase64" parent="AdwBin">
-    <property name="child">
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkScrolledWindow">
-            <property name="vexpand">1</property>
-            <property name="focusable">1</property>
-            <property name="min-content-width">2</property>
-            <property name="min-content-height">0</property>
-            <property name="max-content-width">10</property>
-            <property name="max-content-height">0</property>
-            <property name="propagate-natural-width">1</property>
-            <property name="propagate-natural-height">1</property>
-            <property name="child">
-              <object class="GtkTextView" id="source_data">
-                <property name="focusable">1</property>
-                <property name="wrap-mode">word</property>
-                <property name="left-margin">8</property>
-                <property name="right-margin">8</property>
-                <property name="top-margin">8</property>
-                <property name="bottom-margin">8</property>
-              </object>
-            </property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="halign">center</property>
-            <property name="margin-top">5</property>
-            <property name="margin-bottom">5</property>
-            <property name="spacing">10</property>
-            <child>
-              <object class="GtkButton" id="encode_button">
-                <property name="label" translatable="yes">Encode</property>
-                <property name="focusable">1</property>
-                <property name="receives-default">1</property>
-                <property name="tooltip-text">suggested-action</property>
-                <style>
-                  <class name="suggested-action"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton"  id="decode_button">
-                <property name="label" translatable="yes">Decode</property>
-                <property name="focusable">1</property>
-                <property name="receives-default">1</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton"  id="exchange_button">
-                <property name="label" translatable="yes">Exchange</property>
-                <property name="focusable">1</property>
-                <property name="receives-default">1</property>
-                <property name="tooltip-text">destructive-action</property>
-                <style>
-                  <class name="destructive-action"/>
-                </style>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow">
-            <property name="vexpand">1</property>
-            <property name="focusable">1</property>
-            <property name="min-content-width">2</property>
-            <property name="max-content-width">10</property>
-            <property name="propagate-natural-width">1</property>
-            <property name="child">
-              <object class="GtkTextView" id="destination_data">
-                <property name="focusable">1</property>
-                <property name="wrap-mode">word</property>
-                <property name="left-margin">8</property>
-                <property name="right-margin">8</property>
-                <property name="top-margin">8</property>
-                <property name="bottom-margin">8</property>
-              </object>
-            </property>
-          </object>
-        </child>
-      </object>
-    </property>
-  </template>
+    <requires lib="gtk" version="4.0"/>
+    <requires lib="libadwaita" version="1.0"/>
+    <template class="CocoBase64" parent="AdwBin">
+        <property name="child">
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                    <object class="GtkScrolledWindow">
+                        <property name="vexpand">1</property>
+                        <property name="focusable">1</property>
+                        <property name="min-content-width">2</property>
+                        <property name="min-content-height">0</property>
+                        <property name="max-content-width">10</property>
+                        <property name="max-content-height">0</property>
+                        <property name="propagate-natural-width">1</property>
+                        <property name="propagate-natural-height">1</property>
+                        <property name="child">
+                            <object class="GtkTextView" id="source_data">
+                                <property name="focusable">1</property>
+                                <property name="wrap-mode">word</property>
+                                <property name="left-margin">8</property>
+                                <property name="right-margin">8</property>
+                                <property name="top-margin">8</property>
+                                <property name="bottom-margin">8</property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkBox">
+                        <property name="halign">center</property>
+                        <property name="margin-top">5</property>
+                        <property name="margin-bottom">5</property>
+                        <property name="spacing">10</property>
+                        <child>
+                            <object class="GtkButton" id="encode_button">
+                                <property name="label" translatable="yes">Encode</property>
+                                <property name="focusable">1</property>
+                                <property name="receives-default">1</property>
+                                <property name="tooltip-text">suggested-action</property>
+                                <style>
+                                    <class name="suggested-action"/>
+                                </style>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkButton" id="decode_button">
+                                <property name="label" translatable="yes">Decode</property>
+                                <property name="focusable">1</property>
+                                <property name="receives-default">1</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkButton" id="exchange_button">
+                                <property name="label" translatable="yes">Exchange</property>
+                                <property name="focusable">1</property>
+                                <property name="receives-default">1</property>
+                                <property name="tooltip-text">destructive-action</property>
+                                <style>
+                                    <class name="destructive-action"/>
+                                </style>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkScrolledWindow">
+                        <property name="vexpand">1</property>
+                        <property name="focusable">1</property>
+                        <property name="min-content-width">2</property>
+                        <property name="max-content-width">10</property>
+                        <property name="propagate-natural-width">1</property>
+                        <property name="child">
+                            <object class="GtkTextView" id="destination_data">
+                                <property name="focusable">1</property>
+                                <property name="wrap-mode">word</property>
+                                <property name="left-margin">8</property>
+                                <property name="right-margin">8</property>
+                                <property name="top-margin">8</property>
+                                <property name="bottom-margin">8</property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+            </object>
+        </property>
+    </template>
 </interface>
 
