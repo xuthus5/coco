@@ -1,3 +1,7 @@
 #upload-button {
     color: @red_3;
 }
+
+#mkdir-button {
+    color: @green_5;
+}

@@ -13,6 +13,8 @@ struct _CocoUpYunUpload {
     GtkButton *go_back;
     GtkButton *go_to;
     GtkListBox *file_list;
+    GtkButton *mkdir_button;
+    GtkButton *upload_button;
 };
 
 G_DEFINE_TYPE(CocoUpYunUpload, coco_upyun_upload, ADW_TYPE_BIN
@@ -24,6 +26,19 @@ char *get_current_path(GtkEntry *current_path) {
         return "/";
     }
     return gtk_entry_buffer_get_text(buffer);
+}
+
+void mkdir_to_server(const char * path)
+{
+    json_object *_tbody = json_object_new_object();
+    json_object_object_add(_tbody, "path", json_object_new_string(path));
+    const char *payload = json_object_to_json_string(_tbody);
+
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, "Accept: application/json");
+    headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
+    char *mkdir_response = post_response("https://central.xuthus.cc/api/storage/upyun/mkdir", payload, headers);
+    printf("mkdir %s\n", mkdir_response);
 }
 
 static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self) {
@@ -114,6 +129,12 @@ static void get_and_set_parent_path(GtkButton *button, CocoUpYunUpload *self) {
     const char *parent_path = dirname(now_path);
 
     set_current_path(self->current_path, parent_path);
+    get_file_list_from_path (NULL, self);
+}
+
+static void mkdir_from_path(GtkButton *button, CocoUpYunUpload *self) {
+    char * now_path = get_current_path (self->current_path);
+    mkdir_to_server (now_path);
 }
 
 static void
@@ -125,6 +146,8 @@ coco_upyun_upload_class_init(CocoUpYunUploadClass *klass) {
     gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, current_path);
     gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, go_back);
     gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, go_to);
+    gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, upload_button);
+    gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, mkdir_button);
 }
 
 static void
@@ -132,9 +155,9 @@ coco_upyun_upload_init(CocoUpYunUpload *self) {
     gtk_widget_init_template(GTK_WIDGET(self));
     g_signal_connect(self->go_back, "clicked", G_CALLBACK(get_and_set_parent_path), self);
     g_signal_connect(self->go_to, "clicked", G_CALLBACK(get_file_list_from_path), self);
+    g_signal_connect(self->mkdir_button, "clicked", G_CALLBACK(mkdir_from_path), self);
 
     set_current_path(self->current_path, "/");
-
     get_file_list_from_path(NULL, self);
 }
 
