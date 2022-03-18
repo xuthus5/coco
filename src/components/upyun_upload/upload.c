@@ -12,7 +12,7 @@ struct _CocoUpYunUpload {
 	GtkEntry *current_path;
 	GtkButton *go_back;
 	GtkButton *go_to;
-	GtkListBox *file_list;
+	GtkListView *file_list;
 	GtkButton *mkdir_button;
 	GtkButton *upload_button;
 };
@@ -41,30 +41,19 @@ void mkdir_to_server(const char * path)
 	headers = curl_slist_append(headers, "Accept: application/json");
 	headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 	char *mkdir_response = post_response("https://central.xuthus.cc/api/storage/upyun/mkdir", payload, headers);
-
+    curl_slist_free_all(headers);
 	printf("mkdir %s\n", mkdir_response);
 }
 
-static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
+static void setup_file_list(GtkListItemFactory *factory, GtkListItem *list_item, CocoUpYunUpload *self)
 {
-	// rebuild
-	while (1) {
-		GtkListBoxRow *row = gtk_list_box_get_row_at_index(self->file_list, 0);
-		if (row == NULL) {
-			break;
-		}
-		gtk_list_box_remove(self->file_list, (GtkWidget *)row);
-	}
-
-	struct curl_slist *headers = NULL;
-
+    struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "Accept: application/json");
 	headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 	char url[100];
-
 	sprintf(url, "https://central.xuthus.cc/api/storage/upyun/list?path=%s", get_current_path(self->current_path));
 	char *list_response = get_response(url, headers);
-
+    curl_slist_free_all(headers);
 	printf("%s\n", list_response);
 
 	if (list_response == NULL) {
@@ -72,12 +61,10 @@ static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
 		return;
 	}
 	json_object *response_json = json_tokener_parse(list_response);
-
 	free(list_response);
 
 	json_object *errcode;
 	json_object *errmsg;
-
 	json_object_object_get_ex(response_json, "err_code", &errcode);
 	json_object_object_get_ex(response_json, "err_msg", &errmsg);
 	if (json_object_get_int64(errcode) != 0) {
@@ -117,6 +104,12 @@ static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
 		/* adw_action_row_set_activatable_widget(file_node, suffix_copy); */
 		gtk_list_box_append(self->file_list, file_node);
 	}
+}
+
+static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
+{
+	GtkListItemFactory * factory = gtk_list_view_get_factory (self->file_list);
+    g_signal_connect (factory, "setup", G_CALLBACK (setup_file_list), self);
 }
 
 void set_current_path(GtkEntry *current_path, const char *path)
@@ -186,7 +179,8 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, CocoU
 			     CURLFORM_END);
 		char *upload_response = post_form_response("https://central.xuthus.cc/api/storage/upyun/upload", formpost, headers);
         printf("upload %s\n", upload_response);
-
+        curl_slist_free_all(headers);
+        curl_formfree(formpost);
 		g_object_unref(file);
 	}
 
