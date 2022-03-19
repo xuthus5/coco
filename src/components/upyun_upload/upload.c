@@ -12,7 +12,7 @@ struct _CocoUpYunUpload {
 	GtkEntry *current_path;
 	GtkButton *go_back;
 	GtkButton *go_to;
-	GtkListView *file_list;
+	GtkListBox *file_list;
 	GtkButton *mkdir_button;
 	GtkButton *upload_button;
 };
@@ -45,8 +45,15 @@ void mkdir_to_server(const char * path)
 	printf("mkdir %s\n", mkdir_response);
 }
 
-static void setup_file_list(GtkListItemFactory *factory, GtkListItem *list_item, CocoUpYunUpload *self)
+static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
 {
+    while (1) {
+        GtkListBoxRow *row = gtk_list_box_get_row_at_index(self->file_list, 0);
+        if (row == NULL) {
+            break;
+        }
+        gtk_list_box_remove(self->file_list, (GtkWidget *) row);
+    }
     struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "Accept: application/json");
 	headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
@@ -72,13 +79,15 @@ static void setup_file_list(GtkListItemFactory *factory, GtkListItem *list_item,
 		return;
 	}
 	json_object *top_data;
-
 	json_object_object_get_ex(response_json, "data", &top_data);
 	json_object *list_data;
 
-	json_object_object_get_ex(top_data, "data", &list_data);
-	int len = json_object_array_length(list_data);
+	json_bool exist = json_object_object_get_ex(top_data, "data", &list_data);
+    if (exist == 0) {
+        return;
+    }
 
+	int len = json_object_array_length(list_data);
 	for (int i = 0; i < len; i++) {
 		json_object *item = json_object_array_get_idx(list_data, i);
 		json_object *file_name;
@@ -96,26 +105,16 @@ static void setup_file_list(GtkListItemFactory *factory, GtkListItem *list_item,
 		} else {
 			adw_action_row_set_icon_name(file_node, "text-x-generic");
 		}
-		/* GtkButton * suffix_copy = gtk_button_new(); */
-		/* gtk_button_set_icon_name(suffix_copy, "edit-copy"); */
-		/* adw_action_row_add_suffix(file_node, suffix_copy); */
-		/* GtkStyleContext * style = gtk_widget_get_style_context(suffix_copy); */
-		/* gtk_style_context_add_class(style, "flat"); */
-		/* adw_action_row_set_activatable_widget(file_node, suffix_copy); */
-		gtk_list_box_append(self->file_list, file_node);
-	}
-}
-
-static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
-{
-	GtkListItemFactory * factory = gtk_list_view_get_factory (self->file_list);
-    g_signal_connect (factory, "setup", G_CALLBACK (setup_file_list), self);
+        GtkLabel * trigger = gtk_label_new ("");
+	    adw_action_row_add_suffix (file_node, trigger);
+        adw_action_row_set_activatable_widget (file_node, trigger);
+        gtk_list_box_append (self->file_list, file_node);
+    }
 }
 
 void set_current_path(GtkEntry *current_path, const char *path)
 {
 	GtkEntryBuffer *buffer = gtk_entry_get_buffer(current_path);
-
 	gtk_entry_buffer_set_text(buffer, path, -1);
 }
 
@@ -131,15 +130,19 @@ static void get_and_set_parent_path(GtkButton *button, CocoUpYunUpload *self)
 	}
 
 	const char *parent_path = dirname(now_path);
-
 	set_current_path(self->current_path, parent_path);
+	get_file_list_from_path(NULL, self);
+}
+
+static void set_path_and_load_file_list(char *path, CocoUpYunUpload *self)
+{
+	set_current_path(self->current_path, path);
 	get_file_list_from_path(NULL, self);
 }
 
 static void mkdir_from_path(GtkButton *button, CocoUpYunUpload *self)
 {
 	char * now_path = get_current_path(self->current_path);
-
 	mkdir_to_server(now_path);
 }
 
@@ -190,16 +193,46 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, CocoU
 static void upload_to_path(GtkButton *button, CocoUpYunUpload *self)
 {
 	GtkFileChooserNative * native = gtk_file_chooser_native_new("Open File", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
-
 	g_signal_connect(native, "response", G_CALLBACK(on_choose_file_response), self);
 	gtk_native_dialog_show(GTK_NATIVE_DIALOG(native));
+}
+
+static void activate_file_item(GtkListBox *list, AdwActionRow *row, CocoUpYunUpload *self)
+{
+    char * icon_name = adw_action_row_get_icon_name (row);
+    char * filename = adw_preferences_row_get_title (row);
+    printf("icon %s, filename %s\n", icon_name, filename);
+    if(strcmp (icon_name, "folder") == 0){
+        char * t_path;
+        char * current_path = get_current_path (self->current_path);
+        if (strcmp(current_path, "/") == 0) {
+            sprintf(t_path, "%s%s", get_current_path (self->current_path), filename);
+        } else {
+            sprintf(t_path, "%s/%s", get_current_path (self->current_path), filename);
+        }
+        printf("file path %s\n", t_path);
+        set_path_and_load_file_list (t_path, self);
+        return;
+    }
+    // copy link
+    char * link;
+    char * current_path = get_current_path (self->current_path);
+    const char *website = "https://central-storage.xuthus.cc";
+    if (strcmp(current_path, "/") == 0) {
+        sprintf(link, "%s/%s", website, filename);
+    } else {
+        sprintf(link, "%s/%s/%s", website, current_path, filename);
+    }
+    GdkClipboard *clipboard = gtk_widget_get_clipboard((GtkWidget *) row);
+    gdk_clipboard_set_text(clipboard, link);
+    set_path_and_load_file_list (current_path, self);
+    return;
 }
 
 static void
 coco_upyun_upload_class_init(CocoUpYunUploadClass *klass)
 {
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
-
 	gtk_widget_class_set_template_from_resource(widget_class, "/cc/xuthus/coco/components/upyun_upload/upload.ui");
 	gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, file_list);
 	gtk_widget_class_bind_template_child(widget_class, CocoUpYunUpload, current_path);
@@ -217,8 +250,10 @@ coco_upyun_upload_init(CocoUpYunUpload *self)
 	g_signal_connect(self->go_to, "clicked", G_CALLBACK(get_file_list_from_path), self);
 	g_signal_connect(self->mkdir_button, "clicked", G_CALLBACK(mkdir_from_path), self);
 	g_signal_connect(self->upload_button, "clicked", G_CALLBACK(upload_to_path), self);
+    g_signal_connect(self->file_list, "row-activated", G_CALLBACK(activate_file_item), self);
 
-	set_current_path(self->current_path, "/");
+    // default root path
+    set_current_path(self->current_path, "/");
 	get_file_list_from_path(NULL, self);
 }
 

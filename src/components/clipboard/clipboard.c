@@ -40,7 +40,7 @@ static void pull_clipboard_data(GtkButton *button, CocoClipboard *self) {
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 
-    char *clipboard_response = get_response("https://central.xuthus.cc/api/clipboard/list?page_size=6", headers);
+    char *clipboard_response = get_response("https://central.xuthus.cc/api/clipboard/list?page_size=20", headers);
     curl_slist_free_all(headers);
     if (clipboard_response == NULL) {
         printf("接口调用出错,程序退出.");
@@ -175,7 +175,7 @@ coco_clipboard_init(CocoClipboard *self) {
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 
-    char *clipboard_response = get_response("https://central.xuthus.cc/api/clipboard/list?page_size=6", headers);
+    char *clipboard_response = get_response("https://central.xuthus.cc/api/clipboard/list?page_size=20", headers);
     curl_slist_free_all(headers);
     if (clipboard_response == NULL) {
         printf("接口调用出错,程序退出.\n");
