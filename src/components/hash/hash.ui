@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="libadwaita" version="1.0" />
+  <template class="CocoHash" parent="AdwBin">
+    <property name="child">
+      <object class="AdwClamp">
+        <property name="maximum-size">400</property>
+        <property name="tightening-threshold">300</property>
+        <property name="child">
+          <object class="GtkBox">
+            <property name="valign">center</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">All Char Diff</property>
+                    <child>
+                      <object class="GtkSwitch" id="char_diff">
+                        <property name="valign">center</property>
+                        <property name="state">False</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Number Dict</property>
+                    <child>
+                      <object class="GtkSwitch" id="number_dict">
+                        <property name="valign">center</property>
+                        <property name="state">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Lowercase Dict</property>
+                    <child>
+                      <object class="GtkSwitch" id="lowercase_dict">
+                        <property name="valign">center</property>
+                        <property name="state">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Uppercase Dict</property>
+                    <child>
+                      <object class="GtkSwitch" id="uppercase_dict">
+                        <property name="valign">center</property>
+                        <property name="state">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Special Dict</property>
+                    <child>
+                      <object class="GtkSwitch" id="special_dict">
+                        <property name="valign">center</property>
+                        <property name="state">False</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Generate Length</property>
+                    <child>
+                      <object class="GtkSpinButton" id="generate_length">
+                        <property name="valign">center</property>
+                        <property name="numeric">True</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">1</property>
+                            <property name="upper">255</property>
+                            <property name="value">1</property>
+                            <property name="page-increment">1</property>
+                            <property name="step-increment">1</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Generate Count</property>
+                    <child>
+                      <object class="GtkSpinButton" id="generate_count">
+                        <property name="valign">center</property>
+                        <property name="numeric">True</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">1</property>
+                            <property name="upper">255</property>
+                            <property name="value">1</property>
+                            <property name="page-increment">1</property>
+                            <property name="step-increment">1</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="valign">center</property>
+						    <property name="orientation">vertical</property>
+						    <property name="spacing">12</property>
+                <child>
+								  <object class="GtkButton" id="generate_button">
+									<property name="label">generate!</property>
+									<property name="focusable">1</property>
+									<property name="receives-default">1</property>
+								  </object>
+								</child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="vexpand">1</property>
+                    <property name="focusable">1</property>
+                    <property name="min-content-width">2</property>
+                    <property name="min-content-height">0</property>
+                    <property name="max-content-width">10</property>
+                    <property name="max-content-height">0</property>
+                    <property name="propagate-natural-width">1</property>
+                    <property name="propagate-natural-height">1</property>
+                    <property name="child">
+                      <object class="GtkTextView" id="generate_output">
+                        <property name="focusable">1</property>
+                        <property name="wrap-mode">word</property>
+                        <property name="left-margin">8</property>
+                        <property name="right-margin">8</property>
+                        <property name="top-margin">8</property>
+                        <property name="bottom-margin">8</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>

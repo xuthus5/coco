@@ -8,6 +8,7 @@
         <file>components/clipboard/clipboard.ui</file>
         <file>components/upyun_upload/upload.ui</file>
         <file>components/password_generate/password_generate.ui</file>
+        <file>components/hash/hash.ui</file>
         <file compressed="true">style.css</file>
     </gresource>
 </gresources>

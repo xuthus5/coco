@@ -10,6 +10,7 @@ coco_sources = [
   'components/clipboard/clipboard.c',
   'components/upyun_upload/upload.c',
   'components/password_generate/password_generate.c',
+  'components/hash/hash.c',
 ]
 
 request_c_dep = dependency('request-c', required : true)

@@ -76,6 +76,15 @@
                                 </child>
                                 <child>
                                     <object class="GtkStackPage">
+                                        <property name="name">hash</property>
+                                        <property name="title">Hash</property>
+                                        <property name="child">
+                                            <object class="CocoHash"/>
+                                        </property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkStackPage">
                                         <property name="name">clipboard_sync</property>
                                         <property name="title">Clipboard</property>
                                         <property name="child">

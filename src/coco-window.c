@@ -34,6 +34,7 @@
 #include "components/clipboard/clipboard.h"
 #include "components/upyun_upload/upload.h"
 #include "components/password_generate/password_generate.h"
+#include "components/hash/hash.h"
 #include <adwaita.h>
 
 struct _CocoWindow {
@@ -58,5 +59,6 @@ coco_window_init(CocoWindow *self) {
     g_type_ensure(COCO_TYPE_CLIPBOARD);
     g_type_ensure(COCO_TYPE_UPYUN_UPLOAD);
     g_type_ensure(COCO_TYPE_PASSWORD_GENERATE);
+    g_type_ensure(COCO_TYPE_HASH);
     gtk_widget_init_template(GTK_WIDGET(self));
 }
