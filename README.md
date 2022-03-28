@@ -11,8 +11,8 @@ Coco is licensed under the MIT.
 - [x] base64 encode and decode
 - [x] time convert
 - [x] clipboard
-- [ ] hash
-- [ ] password generate
+- [ ] text hash and file hash
+- [x] password generate
 
 ## Usage
 
@@ -55,3 +55,4 @@ flatpak run cc.xuthus.coco
 ![time-convert](screenshot/time-convert.png)
 
 ![clipboard](screenshot/clipboard.png)
+
