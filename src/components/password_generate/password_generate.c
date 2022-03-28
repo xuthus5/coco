@@ -6,10 +6,11 @@ struct _CocoPasswordGenerate {
     AdwBin parent_instance;
 };
 
-G_DEFINE_TYPE ( CocoPasswordGenerate, coco_password_generate, ADW_TYPE_BIN)
+G_DEFINE_TYPE ( CocoPasswordGenerate, coco_password_generate, ADW_TYPE_BIN
+)
 
 static void
-coco_time_convert_class_init(CocoTimeConvertClass *klass) {
+coco_password_generate_class_init(CocoPasswordGenerateClass *klass) {
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
 
     gtk_widget_class_set_template_from_resource(widget_class,
@@ -17,6 +18,6 @@ coco_time_convert_class_init(CocoTimeConvertClass *klass) {
 }
 
 static void
-coco_time_convert_init(CocoTimeConvert *self) {
+coco_password_generate_init(CocoPasswordGenerate *self) {
     gtk_widget_init_template(GTK_WIDGET(self));
 }

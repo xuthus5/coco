@@ -33,6 +33,7 @@
 #include "components/time_convert/time_convert.h"
 #include "components/clipboard/clipboard.h"
 #include "components/upyun_upload/upload.h"
+#include "components/password_generate/password_generate.h"
 #include <adwaita.h>
 
 struct _CocoWindow {
