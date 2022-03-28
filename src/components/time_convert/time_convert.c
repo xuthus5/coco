@@ -67,7 +67,7 @@ static void convert_to_unix_clicked(GtkButton *button, CocoTimeConvert *self) {
 
     time_t t = mktime(&time_stamp);
 
-    char unix_data[10];
+    char unix_data[20];
 
     sprintf(unix_data, "%d", t);
     GtkEntryBuffer *string_time_buffer = gtk_entry_get_buffer(self->output_unix_time);
