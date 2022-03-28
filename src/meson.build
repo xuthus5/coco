@@ -9,6 +9,7 @@ coco_sources = [
   'components/time_convert/time_convert.c',
   'components/clipboard/clipboard.c',
   'components/upyun_upload/upload.c',
+  'components/password_generate/password_generate.c',
 ]
 
 request_c_dep = dependency('request-c', required : true)

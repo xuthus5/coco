@@ -67,6 +67,15 @@
                                 </child>
                                 <child>
                                     <object class="GtkStackPage">
+                                        <property name="name">password_generate</property>
+                                        <property name="title">Password Generate</property>
+                                        <property name="child">
+                                            <object class="CocoPasswordGenerate"/>
+                                        </property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkStackPage">
                                         <property name="name">clipboard_sync</property>
                                         <property name="title">Clipboard</property>
                                         <property name="child">
