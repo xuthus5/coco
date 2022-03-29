@@ -4,151 +4,158 @@
   <requires lib="libadwaita" version="1.0" />
   <template class="CocoHash" parent="AdwBin">
     <property name="child">
-      <object class="AdwClamp">
-        <property name="maximum-size">400</property>
-        <property name="tightening-threshold">300</property>
-        <property name="child">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Input source text</property>
+            <attributes>
+              <attribute name="weight" value="PANGO_WEIGHT_BOLD" />
+            </attributes>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="vexpand">1</property>
+            <property name="focusable">1</property>
+            <property name="min-content-width">2</property>
+            <property name="min-content-height">0</property>
+            <property name="max-content-width">10</property>
+            <property name="max-content-height">0</property>
+            <property name="propagate-natural-width">1</property>
+            <property name="propagate-natural-height">1</property>
+            <property name="child">
+              <object class="GtkTextView" id="source_data">
+                <property name="focusable">1</property>
+                <property name="wrap-mode">word</property>
+                <property name="left-margin">8</property>
+                <property name="right-margin">8</property>
+                <property name="top-margin">8</property>
+                <property name="bottom-margin">8</property>
+              </object>
+            </property>
+          </object>
+        </child>
+
+        <child>
           <object class="GtkBox">
-            <property name="valign">center</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">12</property>
+            <property name="halign">center</property>
+            <property name="margin-top">5</property>
+            <property name="margin-bottom">5</property>
+            <property name="spacing">10</property>
             <child>
-              <object class="AdwPreferencesGroup">
+              <object class="GtkButton">
+                <property name="child">
+                  <object class="AdwButtonContent">
+                    <property name="icon-name">document-open-symbolic</property>
+                    <property name="label" translatable="yes">_Open</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="clear_all">
+                <property name="label" translatable="yes">Clear</property>
+                <property name="focusable">1</property>
+                <property name="receives-default">1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="get_hash">
+                <property name="label" translatable="yes">Hash</property>
+                <property name="focusable">1</property>
+                <property name="receives-default">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="margin-top">5</property>
+            <property name="margin-start">5</property>
+            <property name="margin-end">5</property>
+            <property name="margin-bottom">5</property>
+            <property name="spacing">10</property>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="tooltip-text">linked</property>
+                <style>
+                  <class name="linked"/>
+                </style>
                 <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">All Char Diff</property>
-                    <child>
-                      <object class="GtkSwitch" id="char_diff">
-                        <property name="valign">center</property>
-                        <property name="state">False</property>
-                      </object>
-                    </child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">MD5 16</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">MD5 32</property>
+                  </object>
+                </child>
+               
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">SHA1</property>
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Number Dict</property>
-                    <child>
-                      <object class="GtkSwitch" id="number_dict">
-                        <property name="valign">center</property>
-                        <property name="state">True</property>
-                      </object>
-                    </child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">SHA256</property>
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Lowercase Dict</property>
-                    <child>
-                      <object class="GtkSwitch" id="lowercase_dict">
-                        <property name="valign">center</property>
-                        <property name="state">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Uppercase Dict</property>
-                    <child>
-                      <object class="GtkSwitch" id="uppercase_dict">
-                        <property name="valign">center</property>
-                        <property name="state">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Special Dict</property>
-                    <child>
-                      <object class="GtkSwitch" id="special_dict">
-                        <property name="valign">center</property>
-                        <property name="state">False</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Generate Length</property>
-                    <child>
-                      <object class="GtkSpinButton" id="generate_length">
-                        <property name="valign">center</property>
-                        <property name="numeric">True</property>
-                        <property name="adjustment">
-                          <object class="GtkAdjustment">
-                            <property name="lower">1</property>
-                            <property name="upper">255</property>
-                            <property name="value">1</property>
-                            <property name="page-increment">1</property>
-                            <property name="step-increment">1</property>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Generate Count</property>
-                    <child>
-                      <object class="GtkSpinButton" id="generate_count">
-                        <property name="valign">center</property>
-                        <property name="numeric">True</property>
-                        <property name="adjustment">
-                          <object class="GtkAdjustment">
-                            <property name="lower">1</property>
-                            <property name="upper">255</property>
-                            <property name="value">1</property>
-                            <property name="page-increment">1</property>
-                            <property name="step-increment">1</property>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">SHA512</property>
                   </object>
                 </child>
               </object>
             </child>
+            
             <child>
               <object class="GtkBox">
-                <property name="valign">center</property>
-						    <property name="orientation">vertical</property>
-						    <property name="spacing">12</property>
+                <property name="orientation">vertical</property>
+                <property name="hexpand">True</property>
+                <property name="tooltip-text">linked</property>
+                <style>
+                  <class name="linked"/>
+                </style>
                 <child>
-								  <object class="GtkButton" id="generate_button">
-									<property name="label">generate!</property>
-									<property name="focusable">1</property>
-									<property name="receives-default">1</property>
-								  </object>
-								</child>
+                  <object class="GtkEntry">
+                    <property name="placeholder-text" translatable="yes">MD5 16</property>
+                  </object>
+                </child>
                 <child>
-                  <object class="GtkScrolledWindow">
-                    <property name="vexpand">1</property>
-                    <property name="focusable">1</property>
-                    <property name="min-content-width">2</property>
-                    <property name="min-content-height">0</property>
-                    <property name="max-content-width">10</property>
-                    <property name="max-content-height">0</property>
-                    <property name="propagate-natural-width">1</property>
-                    <property name="propagate-natural-height">1</property>
-                    <property name="child">
-                      <object class="GtkTextView" id="generate_output">
-                        <property name="focusable">1</property>
-                        <property name="wrap-mode">word</property>
-                        <property name="left-margin">8</property>
-                        <property name="right-margin">8</property>
-                        <property name="top-margin">8</property>
-                        <property name="bottom-margin">8</property>
-                      </object>
-                    </property>
+                  <object class="GtkEntry">
+                    <property name="placeholder-text" translatable="yes">MD5 32</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkEntry">
+                    <property name="placeholder-text" translatable="yes">SHA1</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkEntry">
+                    <property name="placeholder-text" translatable="yes">SHA256</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkEntry">
+                    <property name="placeholder-text" translatable="yes">SHA512</property>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-        </property>
+        </child>
+
       </object>
     </property>
   </template>
