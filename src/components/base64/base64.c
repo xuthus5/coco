@@ -1,6 +1,5 @@
 #include <gtk/gtk.h>
 #include "base64.h"
-#include "lib/b64.h"
 
 struct _CocoBase64 {
     AdwBin parent_instance;
@@ -23,7 +22,7 @@ encode_callback(GtkButton *button, CocoBase64 *user_data) {
     gtk_text_buffer_get_bounds(user_data->input_buffer, &input_start, &input_end);
     gchar *input_text = gtk_text_buffer_get_text(user_data->input_buffer, &input_start, &input_end, TRUE);
     // encode
-    char *encoded_text = b64_encode((unsigned char *) input_text, strlen(input_text));
+    char *encoded_text = g_base64_encode(input_text, strlen(input_text));
     // debug
     g_print("event: encode, input: %s, output: %s\n", input_text, encoded_text);
     // set encode data
@@ -38,7 +37,8 @@ decode_callback(GtkButton *button, CocoBase64 *user_data) {
     gtk_text_buffer_get_bounds(user_data->input_buffer, &input_start, &input_end);
     char *input_text = gtk_text_buffer_get_text(user_data->input_buffer, &input_start, &input_end, TRUE);
     // decode
-    unsigned char *decoded_text = b64_decode(input_text, strlen(input_text));
+    gsize output_len;
+    unsigned char *decoded_text = g_base64_decode(input_text, &output_len);
     // debug
     g_print("event: decode, input: %s, output: %s\n", input_text, decoded_text);
     // set decode data

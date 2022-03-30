@@ -16,7 +16,7 @@ struct _CocoHash
     GtkEntry *sha1;
     GtkEntry *sha256;
     GtkEntry *sha512;
-    char * source_contents;
+    GBytes * source_contents;
 };
 
 G_DEFINE_TYPE(CocoHash, coco_hash, ADW_TYPE_BIN)
@@ -34,13 +34,11 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, CocoH
 		// g_file_hash
         gsize length;
         GError *error;
-        gboolean load_ok = g_file_load_contents(file, NULL, &self->source_contents, &length, NULL, &error);
-        if (!load_ok)
+        self->source_contents = g_file_load_bytes (file, NULL, NULL, &error);
+        if (self->source_contents == NULL)
         {
             printf("load file error: %s\n", error->message);
         }
-        printf("file length: %d, %d\n", length, strlen(self->source_contents));
-        printf("file content: %p\n", self->source_contents);
 	}
 
 	g_object_unref(native);
@@ -87,8 +85,9 @@ static void hash_data(GtkButton *button, CocoHash *self)
     gchar *input_data;
     if (self->source_contents != NULL)
     {
-        input_data = g_strdup(self->source_contents);
-        // printf("file: %s\n", input_data);
+        gsize file_size;
+        input_data = g_bytes_get_data(self->source_contents, &file_size);
+        printf("file: %s\nsize: %d\n", input_data, file_size);
     } else {
         GtkTextBuffer * buffer = gtk_text_view_get_buffer(self->input_source_text);
         GtkTextIter input_start, input_end;
@@ -96,6 +95,9 @@ static void hash_data(GtkButton *button, CocoHash *self)
         input_data = gtk_text_buffer_get_text(buffer, &input_start, &input_end, TRUE);
         printf("input data : %s\n", input_data);
     }
+
+    if (input_data == NULL) return;
+    if (strlen(input_data) == 0) return;
 
     GChecksum *checksum_md5 = g_checksum_new(G_CHECKSUM_MD5);
     if (checksum_md5) {
