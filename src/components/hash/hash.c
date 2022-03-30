@@ -17,6 +17,7 @@ struct _CocoHash
     GtkEntry *sha256;
     GtkEntry *sha512;
     GBytes * source_contents;
+    gboolean is_file;
 };
 
 G_DEFINE_TYPE(CocoHash, coco_hash, ADW_TYPE_BIN)
@@ -32,13 +33,19 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, CocoH
         // clear and disable editable
         gtk_text_view_set_editable(self->input_source_text, FALSE);
 		// g_file_hash
-        gsize length;
-        GError *error;
+        /* gsize length; */
+        GError *error = NULL;
         self->source_contents = g_file_load_bytes (file, NULL, NULL, &error);
-        if (self->source_contents == NULL)
+        if (error != NULL)
         {
             printf("load file error: %s\n", error->message);
+            return;
         }
+        if (self->source_contents == NULL)
+            {
+            printf("load file error: file content null\n");
+            return;
+            }
 	}
 
 	g_object_unref(native);
@@ -47,10 +54,8 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, CocoH
 
 static void open_from_source_file(GtkButton *button, CocoHash *self)
 {
-    if (self->source_contents != NULL)
-    {
-        g_free(self->source_contents);
-    }
+    self->is_file = TRUE;
+    if (self->source_contents != NULL) g_bytes_unref (self->source_contents);
     // file chooser
 	GtkFileChooserNative * native = gtk_file_chooser_native_new("Open File", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
 	g_signal_connect(native, "response", G_CALLBACK(on_choose_file_response), self);
@@ -72,77 +77,44 @@ static void clear_all_data(GtkButton *button, CocoHash *self)
     GtkEntryBuffer * sha512 = gtk_entry_get_buffer(self->sha512);
     gtk_entry_buffer_set_text(sha512, "", 0);
     gtk_text_view_set_editable(self->input_source_text, TRUE);
-
+    self->is_file = FALSE;
     // free source_contents
-    if (self->source_contents != NULL)
-    {
-        g_free(self->source_contents);
-    }
+    if (self->source_contents != NULL) g_bytes_unref (self->source_contents);
 }
 
 static void hash_data(GtkButton *button, CocoHash *self) 
 {
-    gchar *input_data;
-    if (self->source_contents != NULL)
+    if (!self->is_file)
     {
-        gsize file_size;
-        input_data = g_bytes_get_data(self->source_contents, &file_size);
-        printf("file: %s\nsize: %d\n", input_data, file_size);
-    } else {
         GtkTextBuffer * buffer = gtk_text_view_get_buffer(self->input_source_text);
         GtkTextIter input_start, input_end;
         gtk_text_buffer_get_bounds(buffer,&input_start, &input_end);
-        input_data = gtk_text_buffer_get_text(buffer, &input_start, &input_end, TRUE);
+        gchar *input_data = gtk_text_buffer_get_text(buffer, &input_start, &input_end, TRUE);
         printf("input data : %s\n", input_data);
+        self->source_contents = g_bytes_new (input_data, strlen(input_data));
     }
 
-    if (input_data == NULL) return;
-    if (strlen(input_data) == 0) return;
+    if (self->source_contents == NULL) return;
 
-    GChecksum *checksum_md5 = g_checksum_new(G_CHECKSUM_MD5);
-    if (checksum_md5) {
-        g_checksum_update(checksum_md5, input_data, strlen(input_data));
-        gchar * h = g_checksum_get_string(checksum_md5);
-        GtkEntryBuffer * md5_32_buffer = gtk_entry_buffer_new(h, strlen(h));
-        gtk_entry_set_buffer(self->md5_32, md5_32_buffer);
+    gchar * md5_32_sum = sum_md5_32 (self->source_contents);
+    GtkEntryBuffer * md5_32_buffer = gtk_entry_buffer_new(md5_32_sum, strlen(md5_32_sum));
+    gtk_entry_set_buffer(self->md5_32, md5_32_buffer);
+    char cipher_substring [16];
+    strncpy(cipher_substring, &md5_32_sum[8], 16);
+    GtkEntryBuffer * md5_16_buffer = gtk_entry_buffer_new(cipher_substring, 16);
+    gtk_entry_set_buffer(self->md5_16, md5_16_buffer);
 
-        char cipher_substring [16];
-        strncpy(cipher_substring, &h[8], 16);
-        GtkEntryBuffer * md5_16_buffer = gtk_entry_buffer_new(cipher_substring, 16);
-        gtk_entry_set_buffer(self->md5_16, md5_16_buffer);
+    gchar * sha1_sum = sum_sha1(self->source_contents);
+    GtkEntryBuffer * sha1_buffer = gtk_entry_buffer_new(sha1_sum, strlen(sha1_sum));
+    gtk_entry_set_buffer(self->sha1, sha1_buffer);
 
-        g_checksum_free(checksum_md5);
-    }
+    gchar * sha256_sum = sum_sha256(self->source_contents);
+    GtkEntryBuffer * sha256_buffer = gtk_entry_buffer_new(sha256_sum, strlen(sha256_sum));
+    gtk_entry_set_buffer(self->sha256, sha256_buffer);
 
-    GChecksum *checksum_sha1 = g_checksum_new(G_CHECKSUM_SHA1);
-    if (checksum_sha1) {
-        g_checksum_update(checksum_sha1, input_data, strlen(input_data));
-        gchar * h = g_checksum_get_string(checksum_sha1);
-        GtkEntryBuffer * sha1_buffer = gtk_entry_buffer_new(h, strlen(h));
-        gtk_entry_set_buffer(self->sha1, sha1_buffer);
-
-        g_checksum_free(checksum_sha1);
-    }
-
-    GChecksum *checksum_sha256 = g_checksum_new(G_CHECKSUM_SHA256);
-    if (checksum_sha256) {
-        g_checksum_update(checksum_sha256, input_data, strlen(input_data));
-        gchar * h = g_checksum_get_string(checksum_sha256);
-        GtkEntryBuffer * sha256_buffer = gtk_entry_buffer_new(h, strlen(h));
-        gtk_entry_set_buffer(self->sha256, sha256_buffer);
-
-        g_checksum_free(checksum_sha256);
-    }
-
-    GChecksum *checksum_sha512 = g_checksum_new(G_CHECKSUM_SHA512);
-    if (checksum_sha512) {
-        g_checksum_update(checksum_sha512, input_data, strlen(input_data));
-        gchar * h = g_checksum_get_string(checksum_sha512);
-        GtkEntryBuffer * sha512_buffer = gtk_entry_buffer_new(h, strlen(h));
-        gtk_entry_set_buffer(self->sha512, sha512_buffer);
-
-        g_checksum_free(checksum_sha512);
-    }
+    gchar * sha512_sum = sum_sha512(self->source_contents);
+    GtkEntryBuffer * sha512_buffer = gtk_entry_buffer_new(sha512_sum, strlen(sha512_sum));
+    gtk_entry_set_buffer(self->sha512, sha512_buffer);
 }
 
 static void coco_hash_class_init(CocoHashClass *klass)
