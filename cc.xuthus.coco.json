@@ -35,7 +35,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/xuthus5/coco.git"
+                    "url" : "https://gitter.top/xuthus5/coco.git"
                 }
             ]
         }
