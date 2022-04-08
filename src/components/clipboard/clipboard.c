@@ -68,7 +68,8 @@ static void get_clipboard_list(CocoClipboard *self)
                     json_object *content_data;
                     json_object_object_get_ex(item, "content", &content_data);
                     AdwActionRow *clipboard_node = adw_action_row_new();
-                    adw_preferences_row_set_title(clipboard_node, json_object_get_string(content_data));
+                    gchar * title = g_markup_escape_text(json_object_get_string(content_data), -1);
+                    adw_preferences_row_set_title(clipboard_node, title);
                     GtkLabel *copy_label = gtk_label_new ("");
                     adw_action_row_set_activatable_widget(clipboard_node, copy_label);
                     gtk_list_box_append(self->clipboard_list, clipboard_node);
