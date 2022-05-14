@@ -105,7 +105,6 @@ static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
 			adw_action_row_set_icon_name(file_node, "text-x-generic");
 		}
         GtkLabel * trigger = gtk_label_new ("");
-	    adw_action_row_add_suffix (file_node, trigger);
         adw_action_row_set_activatable_widget (file_node, trigger);
         gtk_list_box_append (self->file_list, file_node);
     }
@@ -200,7 +199,7 @@ static void activate_file_item(GtkListBox *list, AdwActionRow *row, CocoUpYunUpl
 {
     char * icon_name = adw_action_row_get_icon_name (row);
     char * filename = adw_preferences_row_get_title (row);
-    printf("icon %s, filename %s\n", icon_name, filename);
+    printf("is_dir: %d, filename: %s\n", icon_name == "folder", filename);
     if(strcmp (icon_name, "folder") == 0){
         char * t_path;
         char * current_path = get_current_path (self->current_path);
@@ -214,9 +213,10 @@ static void activate_file_item(GtkListBox *list, AdwActionRow *row, CocoUpYunUpl
         return;
     }
     // copy link
-    char * link;
     char * current_path = get_current_path (self->current_path);
     const char *website = "https://central-storage.xuthus.cc";
+	int buff_size = strlen(website) + strlen(current_path) + strlen(filename) + 2;
+	char link[buff_size];
     if (strcmp(current_path, "/") == 0) {
         sprintf(link, "%s/%s", website, filename);
     } else {
@@ -224,7 +224,7 @@ static void activate_file_item(GtkListBox *list, AdwActionRow *row, CocoUpYunUpl
     }
     GdkClipboard *clipboard = gtk_widget_get_clipboard((GtkWidget *) row);
     gdk_clipboard_set_text(clipboard, link);
-    set_path_and_load_file_list (current_path, self);
+	printf("copied: %s\n", link);
     return;
 }
 
@@ -255,4 +255,3 @@ coco_upyun_upload_init(CocoUpYunUpload *self)
     set_current_path(self->current_path, "/");
 	get_file_list_from_path(NULL, self);
 }
-
