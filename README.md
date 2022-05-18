@@ -18,14 +18,16 @@ Coco is licensed under the MIT.
 
 ## Usage
 
-install gnome-nightly flatpakrepo.
+install flatpak gnome platform environment or gnome-nightly flatpakrepo.
 
 ```sh
-# gnome-nightly include org.gnome.Platform/x86_64/master
-flatpak remote-add --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
 # need master or gnome platform 42 environment.
-flatpak install org.gnome.Platform/x86_64/master
-flatpak install org.gnome.Sdk/x86_64/master
+flatpak install org.gnome.Platform/x86_64/42
+flatpak install org.gnome.Sdk/x86_64/42
+# gnome-nightly include org.gnome.Platform/x86_64/master
+# flatpak remote-add --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
+# flatpak install org.gnome.Platform/x86_64/master
+# flatpak install org.gnome.Sdk/x86_64/master
 ```
 
 ### build
@@ -56,4 +58,4 @@ flatpak run cc.xuthus.coco
 
 ![time-convert](screenshot/time-convert.png)
 
-![clipboard](screenshot/clipboard.png)
+![password-generate](screenshot/password-generate.png)
