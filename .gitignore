@@ -4,5 +4,6 @@
 coco.kdev4
 .flatpak-builder
 build-flatpak
+build-repo
 *.orig
 

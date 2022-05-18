@@ -46,6 +46,14 @@ cd coco
 flatpak-builder --user --install --force-clean build-flatpak/ cc.xuthus.coco.json
 ```
 
+if install failed, please create local repo and reinstall
+
+```sh
+flatpak-builder --repo=build-repo --force-clean build-flatpak/ cc.xuthus.coco.json
+flatpak --user remote-add --no-gpg-verify coco-repo build-repo
+flatpak --user install coco-repo cc.xuthus.coco
+```
+
 run cc.xuthus.coco
 
 ```sh
