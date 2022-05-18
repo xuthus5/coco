@@ -41,7 +41,7 @@ void mkdir_to_server(const char * path)
 	headers = curl_slist_append(headers, "Accept: application/json");
 	headers = curl_slist_append(headers, "Content-Type: application/json; charset: utf-8");
 	char *mkdir_response = post_response("https://central.xuthus.cc/api/storage/upyun/mkdir", payload, headers);
-    curl_slist_free_all(headers);
+    /* curl_slist_free_all(headers); */
 	printf("mkdir %s\n", mkdir_response);
 }
 
@@ -60,7 +60,7 @@ static void get_file_list_from_path(GtkButton *button, CocoUpYunUpload *self)
 	char url[100];
 	sprintf(url, "https://central.xuthus.cc/api/storage/upyun/list?path=%s", get_current_path(self->current_path));
 	char *list_response = get_response(url, headers);
-    curl_slist_free_all(headers);
+    /* curl_slist_free_all(headers); */
 
 	if (list_response == NULL) {
 		printf("接口调用出错,程序退出.\n");
@@ -180,8 +180,8 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, CocoU
 			     CURLFORM_END);
 		char *upload_response = post_form_response("https://central.xuthus.cc/api/storage/upyun/upload", formpost, headers);
         printf("upload %s\n", upload_response);
-        curl_slist_free_all(headers);
-        curl_formfree(formpost);
+        /* curl_slist_free_all(headers); */
+        /* curl_formfree(formpost); */
 		g_object_unref(file);
 	}
 
