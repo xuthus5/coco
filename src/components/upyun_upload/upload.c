@@ -249,9 +249,9 @@ coco_upyun_upload_init(CocoUpYunUpload *self)
 	g_signal_connect(self->go_to, "clicked", G_CALLBACK(get_file_list_from_path), self);
 	g_signal_connect(self->mkdir_button, "clicked", G_CALLBACK(mkdir_from_path), self);
 	g_signal_connect(self->upload_button, "clicked", G_CALLBACK(upload_to_path), self);
-    g_signal_connect(self->file_list, "row-activated", G_CALLBACK(activate_file_item), self);
+  g_signal_connect(self->file_list, "row-activated", G_CALLBACK(activate_file_item), self);
 
-    // default root path
-    set_current_path(self->current_path, "/");
+  // default root path
+  set_current_path(self->current_path, "/");
 	get_file_list_from_path(NULL, self);
 }

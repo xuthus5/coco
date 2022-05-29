@@ -20,6 +20,7 @@ G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN
 
 static void get_clipboard_list(CocoClipboard *self)
 {
+    printf("%s\n", "get clipboard list");
     while (1) {
         GtkListBoxRow *row = gtk_list_box_get_row_at_index(self->clipboard_list, 0);
         if (row == NULL) {
@@ -52,37 +53,37 @@ static void get_clipboard_list(CocoClipboard *self)
             json_object_object_get_ex(clipboard_response_json, "err_msg", &errmsg);
             printf("接口调用出错: %s\n", json_object_get_string(errmsg));
             return;
-        } else {
-            exist = json_object_object_get_ex(clipboard_response_json, "data", &clipboard_data);
-            if (exist == 1) {
-                exist = json_object_object_get_ex(clipboard_data, "data", &clipboard_list);
-                if (exist != 1) {
-                    AdwActionRow *empty_node = adw_action_row_new();
-                    adw_preferences_row_set_title(empty_node, "list empty...");
-                    gtk_list_box_append(self->clipboard_list, empty_node);
-                    return;
-                }
-                int len = json_object_array_length(clipboard_list);
-                for (int i = 0; i < len; i++) {
-                    json_object *item = json_object_array_get_idx(clipboard_list, i);
-                    json_object *content_data;
-                    json_object_object_get_ex(item, "content", &content_data);
-                    AdwActionRow *clipboard_node = adw_action_row_new();
-                    gchar * title = g_markup_escape_text(json_object_get_string(content_data), -1);
-                    adw_preferences_row_set_title(clipboard_node, title);
-                    GtkLabel *copy_label = gtk_label_new ("");
-                    adw_action_row_set_activatable_widget(clipboard_node, copy_label);
-                    gtk_list_box_append(self->clipboard_list, clipboard_node);
-                }
+        }
+        exist = json_object_object_get_ex(clipboard_response_json, "data", &clipboard_data);
+        if (exist == 1) {
+            exist = json_object_object_get_ex(clipboard_data, "data", &clipboard_list);
+            if (exist != 1) {
+                AdwActionRow *empty_node = adw_action_row_new();
+                adw_preferences_row_set_title(empty_node, "list empty...");
+                gtk_list_box_append(self->clipboard_list, empty_node);
+                return;
+            }
+            int len = json_object_array_length(clipboard_list);
+            for (int i = 0; i < len; i++) {
+                json_object *item = json_object_array_get_idx(clipboard_list, i);
+                json_object *content_data;
+                json_object_object_get_ex(item, "content", &content_data);
+                AdwActionRow *clipboard_node = adw_action_row_new();
+                gchar * title = g_markup_escape_text(json_object_get_string(content_data), -1);
+                adw_preferences_row_set_title(clipboard_node, title);
+                GtkLabel *copy_label = gtk_label_new ("");
+                adw_action_row_set_activatable_widget(clipboard_node, copy_label);
+                gtk_list_box_append(self->clipboard_list, clipboard_node);
             }
         }
-    } else {
-        AdwActionRow *empty_node = adw_action_row_new();
-        adw_preferences_row_set_title(empty_node, "list empty...");
-        gtk_list_box_append(self->clipboard_list, empty_node);
-        printf("接口请求内容: %s\n接口调用出错,程序退出.", clipboard_response);
         return;
     }
+    // get empty list
+    AdwActionRow *empty_node = adw_action_row_new();
+    adw_preferences_row_set_title(empty_node, "list empty...");
+    gtk_list_box_append(self->clipboard_list, empty_node);
+    printf("接口请求内容: %s\n接口调用出错,程序退出.", clipboard_response);
+    return;
 }
 
 static void clipboard_row_activate(GtkListBox *list, AdwActionRow *row, gpointer user_data) {
@@ -171,4 +172,5 @@ coco_clipboard_init(CocoClipboard *self) {
     g_signal_connect(self->clipboard_list, "row-activated", G_CALLBACK(clipboard_row_activate), self);
 
     get_clipboard_list (self);
+    printf("%s\n", "clipboard init");
 }

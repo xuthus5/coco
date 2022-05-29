@@ -114,6 +114,5 @@ static void coco_password_generate_class_init(CocoPasswordGenerateClass *klass) 
 static void
 coco_password_generate_init(CocoPasswordGenerate *self) {
     gtk_widget_init_template(GTK_WIDGET(self));
-
     g_signal_connect(self->generate_button, "clicked", G_CALLBACK(generate_go), self);
 }
