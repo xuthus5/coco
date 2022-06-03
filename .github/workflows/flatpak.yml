@@ -53,7 +53,7 @@ jobs:
     - name: Build flatpak
       run: |
         set -e
-        flatpak-builder --default-branch=${FLATPAK_BRANCH} --disable-download --ccache --sandbox --repo=${FLATPAK_BUILD_REPO} ${FLATPAK_BUILD_DIR} ${MANIFEST_PATH}
+        flatpak-builder --default-branch=${FLATPAK_BRANCH} --repo=${FLATPAK_BUILD_REPO} ${FLATPAK_BUILD_DIR} ${MANIFEST_PATH}
     - name: Upload flatpak repo
       uses: actions/upload-artifact@v1
       with:
