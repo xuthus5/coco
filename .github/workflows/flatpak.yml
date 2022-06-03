@@ -2,7 +2,7 @@
 name: Flatpak
 
 on:
-  push:
+  release:
     branches:
       - master
   workflow_dispatch:
