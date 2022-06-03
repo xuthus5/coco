@@ -2,10 +2,9 @@
 name: Flatpak
 
 on:
-  release:
-    branches:
-      - master
-  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
 
 env:
   APP_ID: cc.xuthus.coco
@@ -90,7 +89,6 @@ jobs:
         path: ${{ env.FLATPAK_BUNDLE }}.flatpak
 
   publish-oci:
-    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: build
 
