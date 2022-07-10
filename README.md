@@ -67,3 +67,4 @@ flatpak run cc.xuthus.coco
 ![time-convert](screenshot/time-convert.png)
 
 ![password-generate](screenshot/password-generate.png)
+

@@ -20,7 +20,6 @@ G_DEFINE_TYPE ( CocoClipboard, coco_clipboard, ADW_TYPE_BIN
 
 static void get_clipboard_list(CocoClipboard *self)
 {
-    printf("%s\n", "get clipboard list");
     while (1) {
         GtkListBoxRow *row = gtk_list_box_get_row_at_index(self->clipboard_list, 0);
         if (row == NULL) {
@@ -172,5 +171,4 @@ coco_clipboard_init(CocoClipboard *self) {
     g_signal_connect(self->clipboard_list, "row-activated", G_CALLBACK(clipboard_row_activate), self);
 
     get_clipboard_list (self);
-    printf("%s\n", "clipboard init");
 }

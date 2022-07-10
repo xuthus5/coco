@@ -6,6 +6,7 @@
 
 struct _CocoPasswordGenerate {
     AdwBin parent_instance;
+    AdwExpanderRow expander;
     GtkSwitch * char_diff;
     GtkSwitch * number_dict;
     GtkSwitch * lowercase_dict;
@@ -100,6 +101,7 @@ static void generate_go(GtkButton *button, CocoPasswordGenerate *self)
 static void coco_password_generate_class_init(CocoPasswordGenerateClass *klass) {
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
     gtk_widget_class_set_template_from_resource(widget_class, "/cc/xuthus/coco/components/password_generate/password_generate.ui");
+    gtk_widget_class_bind_template_child(widget_class, CocoPasswordGenerate, expander);
     gtk_widget_class_bind_template_child(widget_class, CocoPasswordGenerate, char_diff);
     gtk_widget_class_bind_template_child(widget_class, CocoPasswordGenerate, number_dict);
     gtk_widget_class_bind_template_child(widget_class, CocoPasswordGenerate, lowercase_dict);
