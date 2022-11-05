@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.10.3 -->
+<interface>
+    <!-- interface-name upload.ui -->
+    <requires lib="gtk" version="4.6" />
+    <requires lib="libadwaita" version="1.1" />
+    <template class="UploadUpyun" parent="AdwBin">
+        <child>
+            <object class="GtkBox">
+                <property name="baseline-position">top</property>
+                <property name="focusable">True</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">2</property>
+                <child>
+                    <object class="AdwPreferencesGroup">
+                        <child>
+                            <object class="GtkBox">
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="spacing">2</property>
+                                        <child>
+                                            <object class="GtkButton" id="go_home">
+                                                <property name="icon-name">go-home</property>
+                                                <property name="tooltip-text">toolbar</property>
+                                                <style>
+                                                    <class name="toolbar" />
+                                                </style>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkEntry" id="current_path">
+                                                <!-- <property name="placeholder-text" translatable="yes">input file path</property> -->
+                                                <property name="hexpand">True</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkButton" id="go_to">
+                                                <property name="icon-name">go-next</property>
+                                                <!-- <property name="name">go-button</property> -->
+                                                <property name="tooltip-text">toolbar</property>
+                                                <style>
+                                                    <class name="toolbar" />
+                                                </style>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkButton" id="upload_button">
+                                                <property name="icon-name">list-add</property>
+                                                <property name="tooltip-text">toolbar</property>
+                                                <style>
+                                                    <class name="toolbar" />
+                                                </style>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkScrolledWindow">
+                        <property name="hscrollbar-policy">never</property>
+                        <property name="vscrollbar-policy">always</property>
+                        <property name="min-content-height">450</property>
+                        <property name="min-content-width">500</property>
+                        <child>
+                            <object class="AdwPreferencesGroup">
+                                <child>
+                                    <object class="GtkListBox" id="file_list">
+                                        <property name="activate-on-single-click">False</property>
+                                        <style>
+                                            <class name="boxed-list" />
+                                        </style>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </template>
+</interface>

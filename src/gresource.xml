@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/github/xuthus5/uploader">
+    <file>main.ui</file>
+    <file>upload.ui</file>
+    <file compressed="true">style.css</file>
+  </gresource>
+</gresources>

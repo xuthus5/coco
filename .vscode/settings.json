@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "Enabled",
+    "files.associations": {
+        "adwaita.h": "c",
+        "glib-object.h": "c",
+        "upload.h": "c",
+        "stdio.h": "c",
+        "gtk.h": "c"
+    }
+}

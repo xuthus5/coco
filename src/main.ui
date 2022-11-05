@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.10.3 -->
+<interface>
+    <!-- interface-name uploader.ui -->
+    <requires lib="gtk" version="4.6" />
+    <requires lib="libadwaita" version="1.1" />
+    <template class="UploadWindow" parent="AdwApplicationWindow">
+        <property name="default-height">400</property>
+        <property name="default-width">600</property>
+        <property name="halign">center</property>
+        <property name="margin-end">2</property>
+        <child>
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="valign">fill</property>
+                <property name="halign">fill</property>
+                <child>
+                    <object class="AdwHeaderBar">
+                        <property name="title-widget">
+                            <object class="AdwWindowTitle">
+                                <property name="title" translatable="yes">Uploader</property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+                <child>
+                    <object class="UploadUpyun" />
+                </child>
+            </object>
+        </child>
+    </template>
+</interface>

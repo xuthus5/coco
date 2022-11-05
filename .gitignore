@@ -1,5 +1,4 @@
 .kdev4
-.vscode
 .idea
 coco.kdev4
 .flatpak-builder
@@ -7,3 +6,6 @@ build-flatpak
 build-repo
 build-dir
 *.orig
+subprojects/*
+!subprojects/request-c.wrap
+!subprojects/json-c.wrap

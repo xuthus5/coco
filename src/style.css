@@ -1,0 +1,9 @@
+#go-button {
+    color: white;
+    background-color: @green_5;
+}
+
+#upload-button {
+    color: white;
+    background-color: @red_2;
+}

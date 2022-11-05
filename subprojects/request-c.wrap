@@ -1,0 +1,7 @@
+[wrap-git]
+directory = request-c
+url = https://gitter.top/xuthus5/request-c.git
+revision = head
+
+[provide]
+request-c = request_c_dep
