@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - uploader-standalone
+
+permissions:
+  contents: write
+
+jobs:
+  release_code:
+    name: release code
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Tag release
+        uses: tvdias/github-tagger@v0.0.2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
