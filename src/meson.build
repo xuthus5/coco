@@ -19,6 +19,10 @@ deps = [
     dependency('json-c'),
 ]
 
+if not dependency('json-c').found()
+  message('Not find')
+endif
+
 gnome=import('gnome')
 resources = gnome.compile_resources('resources', 'gresource.xml')
 

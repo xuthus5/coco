@@ -77,13 +77,21 @@ static void get_file_list_from_path(GtkButton *button, UploadUpyun *self)
     char url[100];
     sprintf(url, "https://central.xuthus.cc/api/storage/upyun/list?path=%s", get_current_path(self->current_path));
     char *list_response = get_response(url, headers);
-    /* curl_slist_free_all(headers); */
+    curl_slist_free_all(headers);
 
     if (list_response == NULL)
     {
         printf("接口调用出错,程序退出.\n");
         return;
     }
+
+    printf("response: %s.\n", list_response);
+
+    if (strlen(list_response) == 0) {
+        printf("strlen == 0.\n");
+        return;
+    }
+
     json_object *response_json = json_tokener_parse(list_response);
     free(list_response);
 
@@ -181,7 +189,7 @@ static void on_choose_file_response(GtkNativeDialog *native, int response, Uploa
                      CURLFORM_END);
         char *upload_response = post_form_response("https://central.xuthus.cc/api/storage/upyun/upload", formpost, headers);
         printf("upload %s\n", upload_response);
-        /* curl_slist_free_all(headers); */
+        curl_slist_free_all(headers);
         /* curl_formfree(formpost); */
         g_object_unref(file);
     }
